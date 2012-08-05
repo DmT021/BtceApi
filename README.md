@@ -8,7 +8,7 @@ Author
 
 Example
 ------------
-var ticker = BtceApi.GetTicker(BtcePair.BtcUsd);
+`var ticker = BtceApi.GetTicker(BtcePair.BtcUsd);
 var trades = BtceApi.GetTrades(BtcePair.BtcUsd);
 var btcusdDepth = BtceApi.GetDepth(BtcePair.BtcUsd);
 
@@ -19,3 +19,4 @@ var tradeHistory = btceApi.GetTradeHistory(count: 20);
 var orderList = btceApi.GetOrderList();
 var tradeAnswer = btceApi.Trade(BtcePair.BtcUsd, TradeType.Sell, 20, 0.1m);
 var cancelAnswer = btceApi.CancelOrder(tradeAnswer.OrderId);
+`
