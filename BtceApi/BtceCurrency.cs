@@ -54,6 +54,7 @@ namespace BtcE
         Usd,
         Ltc,
         Nmc,
+        Rur,
         Unknown
     }
 
@@ -71,6 +72,8 @@ namespace BtcE
                     return BtceCurrency.Ltc;
                 case "NMC":
                     return BtceCurrency.Nmc;
+                case "RUR":
+                    return BtceCurrency.Rur;
                 default:
                     return BtceCurrency.Unknown;
             }
@@ -86,6 +89,8 @@ namespace BtcE
                 return "LTC";
             if (v == BtceCurrency.Nmc)
                 return "NMC";
+            if (v == BtceCurrency.Rur)
+                return "RUR";
 
             throw new NotSupportedException();
         }

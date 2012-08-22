@@ -12,7 +12,7 @@ namespace ApiTest
         {
             var ticker = BtceApi.GetTicker(BtcePair.BtcUsd);
             var trades = BtceApi.GetTrades(BtcePair.BtcUsd);
-            var btcusdDepth = BtceApi.GetDepth(BtcePair.BtcUsd);
+            var btcusdDepth = BtceApi.GetDepth(BtcePair.UsdRur);
 
             var btceApi = new BtceApi("YOUR-API-KEY", "your_secret_key");
             var info = btceApi.GetInfo();

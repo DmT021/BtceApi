@@ -52,7 +52,9 @@ namespace BtcE
         BtcUsd ,
         LtcBtc ,
         LtcUsd ,
-        NmcBtc ,
+        NmcBtc,
+        BtcRur,
+        UsdRur,
         Unknown
     }
 
@@ -70,6 +72,10 @@ namespace BtcE
                     return BtcePair.LtcUsd;
                 case "nmc_btc":
                     return BtcePair.NmcBtc;
+                case "btc_rur":
+                    return BtcePair.BtcRur;
+                case "usd_rur":
+                    return BtcePair.UsdRur;
                 default:
                     return BtcePair.Unknown;
             }
@@ -85,6 +91,10 @@ namespace BtcE
                 return "ltc_usd";
             if (v == BtcePair.NmcBtc)
                 return "nmc_btc";
+            if (v == BtcePair.BtcRur)
+                return "btc_rur";
+            if (v == BtcePair.UsdRur)
+                return "usd_rur";
 
             throw new NotSupportedException();
         }

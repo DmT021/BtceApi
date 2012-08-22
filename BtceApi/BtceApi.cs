@@ -256,23 +256,9 @@ namespace BtcE
         public static Depth GetDepth(BtcePair pair)
         {
             string resStr;
-            if (pair == BtcePair.BtcUsd)
-            {
-                resStr = Query("https://btc-e.com/api/2/btc_usd/depth");
-            }
-            else if (pair == BtcePair.LtcBtc)
-            {
-                resStr = Query("https://btc-e.com/api/2/ltc_btc/depth");
-
-            }
-            else if (pair == BtcePair.LtcUsd) 
-            {
-                resStr = Query("https://btc-e.com/api/2/ltc_btc/depth");
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            string queryStr = string.Format("https://btc-e.com/api/2/{0}/depth", BtcePairHelper.ToString(pair));
+            resStr = Query(queryStr);
+            
 
             var res = JObject.Parse(resStr);
             return Depth.ReadFromJObject(res);
@@ -281,23 +267,8 @@ namespace BtcE
         public static Ticker GetTicker(BtcePair pair)
         {
             string resStr;
-            if (pair == BtcePair.BtcUsd)
-            {
-                resStr = Query("https://btc-e.com/api/2/btc_usd/ticker");
-            }
-            else if (pair == BtcePair.LtcBtc)
-            {
-                resStr = Query("https://btc-e.com/api/2/ltc_btc/ticker");
-
-            }
-            else if (pair == BtcePair.LtcUsd)
-            {
-                resStr = Query("https://btc-e.com/api/2/ltc_btc/ticker");
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            string queryStr = string.Format("https://btc-e.com/api/2/{0}/ticker", BtcePairHelper.ToString(pair));
+            resStr = Query(queryStr);
 
             var res = JObject.Parse(resStr);
             return Ticker.ReadFromJObject(res["ticker"] as JObject);
@@ -306,23 +277,9 @@ namespace BtcE
         public static List<TradeInfo> GetTrades(BtcePair pair)
         {
             string resStr;
-            if (pair == BtcePair.BtcUsd)
-            {
-                resStr = Query("https://btc-e.com/api/2/btc_usd/trades");
-            }
-            else if (pair == BtcePair.LtcBtc)
-            {
-                resStr = Query("https://btc-e.com/api/2/ltc_btc/trades");
 
-            }
-            else if (pair == BtcePair.LtcUsd)
-            {
-                resStr = Query("https://btc-e.com/api/2/ltc_btc/trades");
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            string queryStr = string.Format("https://btc-e.com/api/2/{0}/trades", BtcePairHelper.ToString(pair));
+            resStr = Query(queryStr);
 
             var res = JArray.Parse(resStr);
             var ret = new List<TradeInfo>();
