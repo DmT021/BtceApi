@@ -289,6 +289,17 @@ namespace BtcE
             }
             return ret;
         }
+
+        public static decimal GetFee(BtcePair pair)
+        {
+            string resStr;
+
+            string queryStr = string.Format("https://btc-e.com/api/2/{0}/fee", BtcePairHelper.ToString(pair));
+            resStr = Query(queryStr);
+
+            var res = JObject.Parse(resStr);
+            return res.Value<decimal>("trade");
+        }
         
         static string Query(string url)
         {
