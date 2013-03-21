@@ -14,6 +14,7 @@ namespace BtcE
         public decimal Ltc { get; private set; }
         public decimal Ruc { get; private set; }
         public decimal Nmc { get; private set; }
+        public decimal Rur { get; private set; }
 
         public static Funds ReadFromJObject(JObject o)
         {
@@ -27,7 +28,8 @@ namespace BtcE
                 Sc = o.Value<decimal>("sc"),
                 Ltc = o.Value<decimal>("ltc"),
                 Ruc = o.Value<decimal>("ruc"),
-                Nmc = o.Value<decimal>("nmc")
+                Nmc = o.Value<decimal>("nmc"),
+                Rur = o.Value<decimal>("rur")
             };
 
             return r;
