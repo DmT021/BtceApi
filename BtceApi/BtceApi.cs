@@ -304,6 +304,10 @@ namespace BtcE
         static string Query(string url)
         {
             var request = WebRequest.Create(new Uri(url)) as HttpWebRequest;
+
+            request.Proxy = WebRequest.DefaultWebProxy;
+            request.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
+
             if (request == null)
                 throw new Exception("Non HTTP WebRequest");
 
