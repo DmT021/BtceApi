@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace BtcE
 {
@@ -49,12 +46,18 @@ namespace BtcE
 
     public enum BtcePair
     {
-        BtcUsd ,
-        LtcBtc ,
-        LtcUsd ,
+        BtcUsd,
+        LtcBtc,
+        LtcUsd,
         NmcBtc,
         BtcRur,
         UsdRur,
+        EurUsd,
+        NvcBtc,
+        TrcBtc,
+        PpcBtc,
+        FtcBtc,
+        CncBtc,
         Unknown
     }
 
@@ -76,6 +79,18 @@ namespace BtcE
                     return BtcePair.BtcRur;
                 case "usd_rur":
                     return BtcePair.UsdRur;
+                case "eur_usd":
+                    return BtcePair.EurUsd;
+                case "nvc_btc":
+                    return BtcePair.NvcBtc;
+                case "trc_btc":
+                    return BtcePair.TrcBtc;
+                case "ppc_btc":
+                    return BtcePair.PpcBtc;
+                case "ftc_btc":
+                    return BtcePair.FtcBtc;
+                case "cnc_btc":
+                    return BtcePair.CncBtc;
                 default:
                     return BtcePair.Unknown;
             }
@@ -95,6 +110,18 @@ namespace BtcE
                 return "btc_rur";
             if (v == BtcePair.UsdRur)
                 return "usd_rur";
+            if (v == BtcePair.EurUsd)
+                return "eur_usd";
+            if (v == BtcePair.NvcBtc)
+                return "nvc_btc";
+            if (v == BtcePair.TrcBtc)
+                return "trc_btc";
+            if (v == BtcePair.PpcBtc)
+                return "ppc_btc";
+            if (v == BtcePair.FtcBtc)
+                return "ftc_btc";
+            if (v == BtcePair.CncBtc)
+                return "cnc_btc";
 
             throw new NotSupportedException();
         }

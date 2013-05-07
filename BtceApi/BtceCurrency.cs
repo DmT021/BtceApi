@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace BtcE
 {
-
     /*public class BtceCurrency
     {
         public static BtceCurrency Btc = new BtceCurrency();
@@ -55,10 +51,16 @@ namespace BtcE
         Ltc,
         Nmc,
         Rur,
+        Eur,
+        Nvc,
+        Trc,
+        Ppc,
+        Ftc,
+        Cnc,
         Unknown
     }
 
-    class BtceCurrencyHelper
+    internal class BtceCurrencyHelper
     {
         public static BtceCurrency FromString(string s)
         {
@@ -74,6 +76,18 @@ namespace BtcE
                     return BtceCurrency.Nmc;
                 case "RUR":
                     return BtceCurrency.Rur;
+                case "EUR":
+                    return BtceCurrency.Eur;
+                case "NVC":
+                    return BtceCurrency.Nvc;
+                case "TRC":
+                    return BtceCurrency.Trc;
+                case "PPC":
+                    return BtceCurrency.Ppc;
+                case "FTC":
+                    return BtceCurrency.Ftc;
+                case "CNC":
+                    return BtceCurrency.Cnc;
                 default:
                     return BtceCurrency.Unknown;
             }
@@ -91,6 +105,18 @@ namespace BtcE
                 return "NMC";
             if (v == BtceCurrency.Rur)
                 return "RUR";
+            if (v == BtceCurrency.Eur)
+                return "EUR";
+            if (v == BtceCurrency.Nvc)
+                return "NVC";
+            if (v == BtceCurrency.Trc)
+                return "TRC";
+            if (v == BtceCurrency.Ppc)
+                return "PPC";
+            if (v == BtceCurrency.Ftc)
+                return "FTC";
+            if (v == BtceCurrency.Cnc)
+                return "CNC";
 
             throw new NotSupportedException();
         }
