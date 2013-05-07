@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace BtcE
@@ -20,15 +18,15 @@ namespace BtcE
             if (o == null)
                 return null;
 
-            var r = new Transaction()
-            {
-                Type = o.Value<int>("type"),
-                Amount = o.Value<decimal>("amount"),
-                Currency = BtceCurrencyHelper.FromString(o.Value<string>("currency")),
-                Timestamp = o.Value<UInt32>("timestamp"),
-                Status = o.Value<int>("status"),
-                Description = o.Value<string>("desc")
-            };
+            var r = new Transaction
+                {
+                    Type = o.Value<int>("type"),
+                    Amount = o.Value<decimal>("amount"),
+                    Currency = BtceCurrencyHelper.FromString(o.Value<string>("currency")),
+                    Timestamp = o.Value<UInt32>("timestamp"),
+                    Status = o.Value<int>("status"),
+                    Description = o.Value<string>("desc")
+                };
 
             return r;
         }
@@ -44,8 +42,8 @@ namespace BtcE
             r.List = new Dictionary<int, Transaction>();
             foreach (var item in o)
             {
-                var transId = int.Parse(item.Key);
-                var trans = Transaction.ReadFromJObject(item.Value as JObject);
+                int transId = int.Parse(item.Key);
+                Transaction trans = Transaction.ReadFromJObject(item.Value as JObject);
                 r.List.Add(transId, trans);
             }
 

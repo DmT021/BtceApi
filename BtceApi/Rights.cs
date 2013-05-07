@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace BtcE
 {
@@ -16,11 +12,11 @@ namespace BtcE
             if (o == null)
                 return null;
 
-            var r = new Rights()
-            {
-                Info = o.Value<int>("info") == 1,
-                Trade = o.Value<int>("trade") == 1
-            };
+            var r = new Rights
+                {
+                    Info = o.Value<int>("info") == 1,
+                    Trade = o.Value<int>("trade") == 1
+                };
 
             return r;
         }

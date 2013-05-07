@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace BtcE
 {
@@ -21,19 +17,18 @@ namespace BtcE
             if (o == null)
                 return null;
 
-            var r = new Funds()
-            {
-                Usd = o.Value<decimal>("usd"),
-                Btc = o.Value<decimal>("btc"),
-                Sc = o.Value<decimal>("sc"),
-                Ltc = o.Value<decimal>("ltc"),
-                Ruc = o.Value<decimal>("ruc"),
-                Nmc = o.Value<decimal>("nmc"),
-                Rur = o.Value<decimal>("rur")
-            };
+            var r = new Funds
+                {
+                    Usd = o.Value<decimal>("usd"),
+                    Btc = o.Value<decimal>("btc"),
+                    Sc = o.Value<decimal>("sc"),
+                    Ltc = o.Value<decimal>("ltc"),
+                    Ruc = o.Value<decimal>("ruc"),
+                    Nmc = o.Value<decimal>("nmc"),
+                    Rur = o.Value<decimal>("rur")
+                };
 
             return r;
         }
     };
-
 }

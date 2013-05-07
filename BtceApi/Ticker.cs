@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace BtcE
@@ -23,18 +20,18 @@ namespace BtcE
             if (o == null)
                 return null;
 
-            var r = new Ticker()
-            {
-                Average = o.Value<decimal>("avg"),
-                Buy = o.Value<decimal>("buy"),
-                High = o.Value<decimal>("high"),
-                Last = o.Value<decimal>("last"),
-                Low = o.Value<decimal>("low"),
-                Sell = o.Value<decimal>("sell"),
-                Volume = o.Value<decimal>("vol"),
-                VolumeCurrent = o.Value<decimal>("vol_cur"),
-                ServerTime = o.Value<UInt32>("server_time"),
-            };
+            var r = new Ticker
+                {
+                    Average = o.Value<decimal>("avg"),
+                    Buy = o.Value<decimal>("buy"),
+                    High = o.Value<decimal>("high"),
+                    Last = o.Value<decimal>("last"),
+                    Low = o.Value<decimal>("low"),
+                    Sell = o.Value<decimal>("sell"),
+                    Volume = o.Value<decimal>("vol"),
+                    VolumeCurrent = o.Value<decimal>("vol_cur"),
+                    ServerTime = o.Value<UInt32>("server_time"),
+                };
 
             return r;
         }
