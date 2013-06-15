@@ -49,54 +49,35 @@ namespace BtcE
 
     public enum BtcePair
     {
-        BtcUsd ,
-        LtcBtc ,
-        LtcUsd ,
-        NmcBtc,
-        BtcRur,
-        UsdRur,
-        Unknown
+		Btc_Usd,
+		Btc_Rur,
+		Btc_Eur,
+		Ltc_Btc,
+		Ltc_Usd,
+		Ltc_Rur,
+		Nmc_Btc,
+		Nvc_Btc,
+		Usd_Rur,
+		Eur_Usd,
+		Trc_Btc,
+		Ppc_Btc,
+		Ftc_Btc,
+		Cnc_Btc,
+		Unknown
     }
 
     public class BtcePairHelper
     {
         public static BtcePair FromString(string s)
         {
-            switch (s)
-            {
-                case "btc_usd":
-                    return BtcePair.BtcUsd;
-                case "ltc_btc":
-                    return BtcePair.LtcBtc;
-                case "ltc_usd":
-                    return BtcePair.LtcUsd;
-                case "nmc_btc":
-                    return BtcePair.NmcBtc;
-                case "btc_rur":
-                    return BtcePair.BtcRur;
-                case "usd_rur":
-                    return BtcePair.UsdRur;
-                default:
-                    return BtcePair.Unknown;
-            }
+			BtcePair ret = BtcePair.Unknown;
+			Enum.TryParse<BtcePair>(s.ToLowerInvariant(), out ret);
+			return ret;
         }
 
         public static string ToString(BtcePair v)
         {
-            if (v == BtcePair.BtcUsd)
-                return "btc_usd";
-            if (v == BtcePair.LtcBtc)
-                return "ltc_btc";
-            if (v == BtcePair.LtcUsd)
-                return "ltc_usd";
-            if (v == BtcePair.NmcBtc)
-                return "nmc_btc";
-            if (v == BtcePair.BtcRur)
-                return "btc_rur";
-            if (v == BtcePair.UsdRur)
-                return "usd_rur";
-
-            throw new NotSupportedException();
+			return Enum.GetName(typeof(BtcePair), v).ToLowerInvariant();
         }
     }
 }
