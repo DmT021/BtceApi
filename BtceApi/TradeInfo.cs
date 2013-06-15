@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BtcE.Utils;
 using Newtonsoft.Json.Linq;
-using BtcE.Utils;
-
+using System;
 namespace BtcE
 {
-    public class TradeInfo
-    {
-        public decimal Amount { get; private set; }
-        public DateTime Date { get; private set; }
-        public BtceCurrency Item { get; private set; }
-        public decimal Price { get; private set; }
-        public BtceCurrency PriceCurrency { get; private set; }
-        public UInt32 Tid { get; private set; }
-        public TradeInfoType Type { get; private set; }
+	public class TradeInfo
+	{
+		public decimal Amount { get; private set; }
+		public DateTime Date { get; private set; }
+		public BtceCurrency Item { get; private set; }
+		public decimal Price { get; private set; }
+		public BtceCurrency PriceCurrency { get; private set; }
+		public UInt32 Tid { get; private set; }
+		public TradeInfoType Type { get; private set; }
 
-        public static TradeInfo ReadFromJObject(JObject o)
+		public static TradeInfo ReadFromJObject(JObject o)
         {
             if (o == null)
                 return null;
 
-            var r = new TradeInfo()
+			return new TradeInfo()
             {
                 Amount = o.Value<decimal>("amount"),
                 Price = o.Value<decimal>("price"),
@@ -32,8 +28,6 @@ namespace BtcE
                 Tid = o.Value<UInt32>("tid"),
                 Type = TradeInfoTypeHelper.FromString(o.Value<string>("trade_type"))
             };
-
-            return r;
         }
-    }
+	}
 }

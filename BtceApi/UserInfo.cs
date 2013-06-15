@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace BtcE
 {
@@ -14,13 +10,10 @@ namespace BtcE
         public int OpenOrders { get; private set; }
         public int ServerTime { get; private set; }
 
-        private UserInfo()
-        {
-        }
-
+        private UserInfo(){}
         public static UserInfo ReadFromJObject(JObject o)
         {
-            var r = new UserInfo()
+            return new UserInfo()
             {
                 Funds = Funds.ReadFromJObject(o["funds"] as JObject),
                 Rights = Rights.ReadFromJObject(o["rights"] as JObject),
@@ -28,8 +21,6 @@ namespace BtcE
                 OpenOrders = o.Value<int>("open_orders"),
                 ServerTime = o.Value<int>("server_time")
             };
-
-            return r;
         }
     }
 }

@@ -167,8 +167,7 @@ namespace BtcE
 			request.ContentLength = data.Length;
 
 			request.Headers.Add("Key", key);
-			var sign = ByteArrayToString(hashMaker.ComputeHash(data)).ToLower();
-			request.Headers.Add("Sign", sign);
+			request.Headers.Add("Sign", ByteArrayToString(hashMaker.ComputeHash(data)).ToLower());
 			var reqStream = request.GetRequestStream();
 			reqStream.Write(data, 0, data.Length);
 			reqStream.Close();
