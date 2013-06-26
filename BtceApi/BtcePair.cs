@@ -5,11 +5,11 @@ namespace BtcE
 	public enum BtcePair
 	{
 		btc_usd,
-		btc_Rur,
+		btc_rur,
 		btc_eur,
 		ltc_btc,
 		ltc_usd,
-		ltc_Rur,
+		ltc_rur,
 		nmc_btc,
 		nvc_btc,
 		usd_rur,
@@ -17,8 +17,7 @@ namespace BtcE
 		trc_btc,
 		ppc_btc,
 		ftc_btc,
-		fnc_btc,
-		Unknown
+        Unknown
 	}
 
 	public class BtcePairHelper
