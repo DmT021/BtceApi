@@ -52,6 +52,7 @@
     <Compile Include="BtceApi.cs" />
     <Compile Include="BtceCurrency.cs" />
     <Compile Include="BtcePair.cs" />
+    <Compile Include="BtcePairHelper.cs" />
     <Compile Include="CancelOrderAnswer.cs" />
     <Compile Include="Depth.cs" />
     <Compile Include="Funds.cs" />

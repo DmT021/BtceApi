@@ -22,16 +22,18 @@ namespace BtcE
 		string key;
 		HMACSHA512 hashMaker;
 		UInt32 nonce;
-		public BtceApi(string key, string secret) {
+		public readonly string instanseExchangeHost;
+		public static string ExchangeHost = "https://btc-e.com/";
+		public BtceApi( string key, string secret, string exchangeHost =null) {
 			this.key = key;
 			hashMaker = new HMACSHA512(Encoding.ASCII.GetBytes(secret));
 			nonce = UnixTime.Now;
+			this.instanseExchangeHost = exchangeHost ?? "https://btc-e.com/";
 		}
+
 		public UserInfo GetInfo() {
 			var resultStr = Query(new Dictionary<string, string>()
-            {
-                { "method", "getInfo" }
-            });
+            { { "method", "getInfo" } });
 			var result = JObject.Parse(resultStr);
 			if ( result.Value<int>("success") == 0 )
 				throw new Exception(result.Value<string>("error"));
@@ -48,9 +50,7 @@ namespace BtcE
 			DateTime? end = null
 			) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "TransHistory" }
-            };
+            { { "method", "TransHistory" } };
 
 			if ( from != null ) args.Add("from", from.Value.ToString());
 			if ( count != null ) args.Add("count", count.Value.ToString());
@@ -60,8 +60,7 @@ namespace BtcE
 			if ( since != null ) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
 			if ( end != null ) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
 			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
+			if ( result.Value<int>("success") == 0 ) throw new Exception(result.Value<string>("error"));
 			return TransHistory.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -75,9 +74,7 @@ namespace BtcE
 			DateTime? end = null
 			) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "TradeHistory" }
-            };
+            { { "method", "TradeHistory" } };
 
 			if ( from != null ) args.Add("from", from.Value.ToString());
 			if ( count != null ) args.Add("count", count.Value.ToString());
@@ -134,8 +131,7 @@ namespace BtcE
                 { "amount", DecimalToString(amount) }
             };
 			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
+			if ( result.Value<int>("success") == 0 ) throw new Exception(result.Value<string>("error"));
 			return TradeAnswer.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -146,8 +142,7 @@ namespace BtcE
                 { "order_id", orderId.ToString() }
             };
 			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
+			if ( result.Value<int>("success") == 0 ) throw new Exception(result.Value<string>("error"));
 			return CancelOrderAnswer.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -157,7 +152,7 @@ namespace BtcE
 			var dataStr = BuildPostData(args);
 			var data = Encoding.ASCII.GetBytes(dataStr);
 
-			var request = WebRequest.Create(new Uri("https://btc-e.com/tapi")) as HttpWebRequest;
+			var request = WebRequest.Create(new Uri(this.instanseExchangeHost +"tapi")) as HttpWebRequest;
 			if ( request == null )
 				throw new Exception("Non HTTP WebRequest");
 
@@ -193,27 +188,22 @@ namespace BtcE
 			return d.ToString(CultureInfo.InvariantCulture);
 		}
 		public static Depth GetDepth(BtcePair pair) {
-			string queryStr = string.Format("https://btc-e.com/api/2/{0}/depth", BtcePairHelper.ToString(pair));
-			return Depth.ReadFromJObject(JObject.Parse(Query(queryStr)));
+			return Depth.ReadFromJObject( JObject.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/depth", BtcePairHelper.ToString( pair ) ) ) ) );
 		}
 		public static Ticker GetTicker(BtcePair pair) {
-			string queryStr = string.Format("https://btc-e.com/api/2/{0}/ticker", BtcePairHelper.ToString(pair));
-			return Ticker.ReadFromJObject(JObject.Parse(Query(queryStr))["ticker"] as JObject);
+			return Ticker.ReadFromJObject( JObject.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/ticker", BtcePairHelper.ToString( pair ) ) ) )[ "ticker" ] as JObject );
 		}
-		public static List<TradeInfo> GetTrades(BtcePair pair) {
-			string queryStr = string.Format("https://btc-e.com/api/2/{0}/trades", BtcePairHelper.ToString(pair));
-			return JArray.Parse(Query(queryStr)).OfType<JObject>().Select(TradeInfo.ReadFromJObject).ToList();
+		public static TradeInfo[] GetTrades(BtcePair pair) {
+			return JArray.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/trades", BtcePairHelper.ToString( pair ) ) ) ).OfType<JObject>().Select( TradeInfo.ReadFromJObject ).ToArray();
 		}
 		public static decimal GetFee(BtcePair pair) {
-			string queryStr = string.Format("https://btc-e.com/api/2/{0}/fee", BtcePairHelper.ToString(pair));
-			return JObject.Parse(Query(queryStr)).Value<decimal>("trade");
+			return JObject.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/fee", BtcePairHelper.ToString( pair ) ) ) ).Value<decimal>( "trade" );
 		}
 		static string Query(string url) {
 			var request = WebRequest.Create(url);
 			request.Proxy = WebRequest.DefaultWebProxy;
 			request.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
-			if ( request == null )
-				throw new Exception("Non HTTP WebRequest");
+			if ( request == null ) throw new Exception("Non HTTP WebRequest");
 			return new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
 		}
 	}

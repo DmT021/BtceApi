@@ -4,7 +4,7 @@ namespace BtcE
 	public enum BtceCurrency
 	{
 		btc,
-		cnc,
+		eur,
 		ftc,
 		ltc,
 		nmc,
