@@ -36,7 +36,7 @@ namespace BtcE
             { { "method", "getInfo" } });
 			var result = JObject.Parse(resultStr);
 			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
+				throw new BtceException(result.Value<string>("error"));
 			return UserInfo.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -86,7 +86,7 @@ namespace BtcE
 			
 			var result = JObject.Parse(Query(args));
 			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
+				throw new BtceException( result.Value<string>( "error" ) );
 			return TradeHistory.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -117,7 +117,7 @@ namespace BtcE
 			if ( active != null ) args.Add("active", active.Value ? "1" : "0");
 			var result = JObject.Parse(Query(args));
 			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
+				throw new BtceException( result.Value<string>( "error" ) );
 			return OrderList.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -131,7 +131,7 @@ namespace BtcE
                 { "amount", DecimalToString(amount) }
             };
 			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 ) throw new Exception(result.Value<string>("error"));
+			if ( result.Value<int>( "success" ) == 0 ) throw new BtceException( result.Value<string>( "error" ) );
 			return TradeAnswer.ReadFromJObject(result["return"] as JObject);
 		}
 
@@ -142,7 +142,7 @@ namespace BtcE
                 { "order_id", orderId.ToString() }
             };
 			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 ) throw new Exception(result.Value<string>("error"));
+			if ( result.Value<int>( "success" ) == 0 ) throw new BtceException( result.Value<string>( "error" ) );
 			return CancelOrderAnswer.ReadFromJObject(result["return"] as JObject);
 		}
 
