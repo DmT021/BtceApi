@@ -22,13 +22,13 @@ namespace BtcE
 		string key;
 		HMACSHA512 hashMaker;
 		UInt32 nonce;
-		public readonly string instanseExchangeHost;
+		readonly string instanseExchangeHost;
 		public static string ExchangeHost = "https://btc-e.com/";
 		public BtceApi( string key, string secret, string exchangeHost =null) {
 			this.key = key;
 			hashMaker = new HMACSHA512(Encoding.ASCII.GetBytes(secret));
 			nonce = UnixTime.Now;
-			this.instanseExchangeHost = exchangeHost ?? "https://btc-e.com/";
+			this.instanseExchangeHost = exchangeHost ?? ExchangeHost;
 		}
 
 		public UserInfo GetInfo() {
