@@ -35,9 +35,7 @@ namespace BtcE
         public Dictionary<int, Transaction> List { get; private set; }
         public static TransHistory ReadFromJObject(JObject o)
         {
-			return new TransHistory() {
-				List = o.OfType<KeyValuePair<string,JToken>>().ToDictionary(a=>int.Parse(a.Key), a=>Transaction.ReadFromJObject(a.Value as JObject))
-			};
+			return new TransHistory() { List = ((IDictionary<string, JToken>)o).ToDictionary( a => int.Parse(a.Key), a => Transaction.ReadFromJObject(a.Value as JObject) )};
         }
     }
 }
