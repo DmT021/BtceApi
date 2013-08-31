@@ -188,16 +188,16 @@ namespace BtcE
 			return d.ToString(CultureInfo.InvariantCulture);
 		}
 		public static Depth GetDepth(BtcePair pair) {
-			return Depth.ReadFromJObject( JObject.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/depth", BtcePairHelper.ToString( pair ) ) ) ) );
+			return Depth.ReadFromJObject( JObject.Parse( Query( string.Format( "{1}api/2/{0}/depth", BtcePairHelper.ToString( pair ), ExchangeHost) ) ) );
 		}
 		public static Ticker GetTicker(BtcePair pair) {
-			return Ticker.ReadFromJObject( JObject.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/ticker", BtcePairHelper.ToString( pair ) ) ) )[ "ticker" ] as JObject );
+			return Ticker.ReadFromJObject( JObject.Parse( Query( string.Format( "{1}api/2/{0}/ticker", BtcePairHelper.ToString( pair ), ExchangeHost) ) )[ "ticker" ] as JObject );
 		}
 		public static TradeInfo[] GetTrades(BtcePair pair) {
-			return JArray.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/trades", BtcePairHelper.ToString( pair ) ) ) ).OfType<JObject>().Select( TradeInfo.ReadFromJObject ).ToArray();
+			return JArray.Parse( Query( string.Format( "{1}api/2/{0}/trades", BtcePairHelper.ToString( pair ), ExchangeHost) ) ).OfType<JObject>().Select( TradeInfo.ReadFromJObject ).ToArray();
 		}
 		public static decimal GetFee(BtcePair pair) {
-			return JObject.Parse( Query( string.Format( ExchangeHost + "api/2/{0}/fee", BtcePairHelper.ToString( pair ) ) ) ).Value<decimal>( "trade" );
+			return JObject.Parse( Query( string.Format( "{1}api/2/{0}/fee", BtcePairHelper.ToString( pair ), ExchangeHost) ) ).Value<decimal>( "trade" );
 		}
 		static string Query(string url) {
 			var request = WebRequest.Create(url);
