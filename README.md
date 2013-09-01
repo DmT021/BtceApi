@@ -39,10 +39,10 @@ Synchronous:
 
 ```c#
 var info = btceApi.GetInfo();
-var transHistory = btceApi.GetTransHistory(new BtceApiTransHistoryParams());
-var tradeHistory = btceApi.GetTradeHistory(new BtceApiTransHistoryParams(count: 20));
-var orderList = btceApi.GetOrderList(new BtceApiTransHistoryParams());
-var tradeAnswer = btceApi.Trade(new BtceApiTradeParams(BtcePair.BtcUsd, TradeType.Sell, 20, 0.1m));
+var transHistory = btceApi.GetTransHistory();
+var tradeHistory = btceApi.GetTradeHistory(count: 20);
+var orderList = btceApi.GetOrderList();
+var tradeAnswer = btceApi.Trade(BtcePair.BtcUsd, TradeType.Sell, 20, 0.1m);
 var cancelAnswer = btceApi.CancelOrder(tradeAnswer.OrderId);
 ```
 
@@ -50,9 +50,9 @@ Asynchronous:
 
 ```c#
 var info = await btceApi.GetInfo();
-var transHistory = await btceApi.GetTransHistoryAsync(new BtceApiTransHistoryParams());
-var tradeHistory = await btceApi.GetTradeHistoryAsync(new BtceApiTransHistoryParams(count: 20));
-var orderList = await btceApi.GetOrderListAsync(new BtceApiTransHistoryParams());
-var tradeAnswer = await btceApi.TradeAsync(new BtceApiTradeParams(BtcePair.BtcUsd, TradeType.Sell, 20, 0.1m));
+var transHistory = await btceApi.GetTransHistoryAsync();
+var tradeHistory = await btceApi.GetTradeHistoryAsync(count: 20);
+var orderList = await btceApi.GetOrderListAsync();
+var tradeAnswer = await btceApi.TradeAsync(BtcePair.BtcUsd, TradeType.Sell, 20, 0.1m);
 var cancelAnswer = await btceApi.CancelOrderAsync(tradeAnswer.OrderId);
 ```

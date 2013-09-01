@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Web;
-using Newtonsoft.Json.Linq;
 
 namespace BtcE
 {

@@ -33,22 +33,38 @@ namespace BtcE {
 		public UserInfo GetInfo() {return UserInfo.ReadFromJObject( QueryObject( new Dictionary<string, string>() { { "method", "getInfo" } } ) ); }
 		public async Task<UserInfo> GetInfoAsync() { return UserInfo.ReadFromJObject( await QueryObjectAsync( new Dictionary<string, string>() { { "method", "getInfo" } } ) ); }
 
+		public TransHistory GetTransHistory(int? from = null, int? count = null, int? fromId = null, int? endId = null,bool? orderAsc = null, DateTime? since = null, DateTime? end = null){
+			return GetTransHistory(new BtceApiTransHistoryParams(from, count, fromId, endId, orderAsc, since, end));}
 		public TransHistory GetTransHistory( BtceApiTransHistoryParams args ) { return TransHistory.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<TransHistory> GetTransHistoryAsync(int? from = null, int? count = null, int? fromId = null, int? endId = null,bool? orderAsc = null, DateTime? since = null, DateTime? end = null){
+			return await GetTransHistoryAsync(new BtceApiTransHistoryParams(from, count, fromId, endId, orderAsc, since, end));}
 		public async Task<TransHistory> GetTransHistoryAsync( BtceApiTransHistoryParams args ) { return TransHistory.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
 
+		public TradeHistory GetTradeHistory(int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null){
+			return GetTradeHistory( new BtceApiTradeHistoryParams( from, count, fromId, endId, orderAsc, since, end ) );}
 		public TradeHistory GetTradeHistory( BtceApiTradeHistoryParams args ) { return TradeHistory.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<TradeHistory> GetTradeHistoryAsync( int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) {
+			return await GetTradeHistoryAsync( new BtceApiTradeHistoryParams( from, count, fromId, endId, orderAsc, since, end ) );}
 		public async Task<TradeHistory> GetTradeHistoryAsync( BtceApiTradeHistoryParams args ) { return TradeHistory.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
 
+		public OrderList GetOrderList(int? from = null, int? count = null, int? fromId = null, int? endId = null,bool? orderAsc = null, DateTime? since = null, DateTime? end = null){
+			return GetOrderList(new BtceApiOrderListParams(from, count, fromId, endId, orderAsc, since, end ) );}
 		public OrderList GetOrderList( BtceApiOrderListParams args ) { return OrderList.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<OrderList> GetOrderListAsync( int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) {
+			return await GetOrderListAsync( new BtceApiOrderListParams( from, count, fromId, endId, orderAsc, since, end ) );}
 		public async Task<OrderList> GetOrderListAsync( BtceApiOrderListParams args ) { return OrderList.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
 
+		public TradeAnswer Trade(BtcePair pair, TradeType type, decimal rate, decimal amount ){ return Trade(new BtceApiTradeParams(pair,type, rate, amount));}
 		public TradeAnswer Trade( BtceApiTradeParams args ) { return TradeAnswer.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<TradeAnswer> TradeAsync( BtcePair pair, TradeType type, decimal rate, decimal amount ) { return await TradeAsync( new BtceApiTradeParams( pair, type, rate, amount ) ); }
 		public async Task<TradeAnswer> TradeAsync( BtceApiTradeParams args ) { return TradeAnswer.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
+
 
 		public CancelOrderAnswer CancelOrder( int orderId ) {
 			return CancelOrderAnswer.ReadFromJObject( QueryObject( new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString() } } ) );}
 		public async Task<CancelOrderAnswer> CancelOrderAsync( int orderId ) {
 			return CancelOrderAnswer.ReadFromJObject( await QueryObjectAsync( new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString() } } ) ); }
+		
 		UInt32 GetNonce() { return nonce++; }
 		string Query( Dictionary<string, string> args ) {
 			args.Add( "nonce", GetNonce().ToString() );
@@ -103,6 +119,7 @@ namespace BtcE {
 
 		public static decimal GetFee( BtcePair pair ) { return _parseFee( Query( _prepareFeeUrl( pair ) ) ); }
 		public static async Task<decimal> GetFeeAsync( BtcePair pair ) { return _parseFee( await QueryAsync( _prepareFeeUrl( pair ) ) ); }
+		
 		private static Depth _parseDepth( string s ) { return Depth.ReadFromJObject( JObject.Parse( s ) ); }
 		private static Ticker _parseTicker( string s ) { return Ticker.ReadFromJObject( JObject.Parse( s )[ "ticker" ] as JObject ); }
 		private static TradeInfo[] _parseTrades( string s ) { return JArray.Parse( s ).OfType<JObject>().Select( TradeInfo.ReadFromJObject ).ToArray(); }

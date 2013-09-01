@@ -49,13 +49,13 @@ namespace BtcE {
 	public class BtceApiTransHistoryParams : BtceApiHistoryParams {
 		public BtceApiTransHistoryParams() : base( "TransHistory" ) { }
 		public BtceApiTransHistoryParams(
-			string method, int? from = null, int? count = null, int? fromId = null,
+			int? from = null, int? count = null, int? fromId = null,
 			int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) :
 			base( "TransHistory", from, count, fromId, endId, orderAsc, since, end ) { }
 	}
 	public class BtceApiTradeHistoryParams : BtceApiHistoryParams {
 		public BtceApiTradeHistoryParams(
-			string method, int? from = null, int? count = null, int? fromId = null,
+			int? from = null, int? count = null, int? fromId = null,
 			int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) :
 			base( "TradeHistory", from, count, fromId, endId, orderAsc, since, end ) { }
 	}
@@ -64,7 +64,7 @@ namespace BtcE {
 		public BtcePair? Pair;
 		public BtceApiOrderListParams() : base( "OrderList" ) { }
 		public BtceApiOrderListParams(
-			string method, int? from = null, int? count = null, int? fromId = null,
+			int? from = null, int? count = null, int? fromId = null,
 			int? endId = null, bool? orderAsc = null, DateTime? since = null,
 			DateTime? end = null, BtcePair? pair = null, bool? active = null
 			) :
