@@ -1,7 +1,7 @@
 C# API for btc-e.com
 ====================
 
-Author
+Authors
 ------------
   
 - Galimzyanov Dmitry - first version(https://github.com/DmT021/BtceApi)
