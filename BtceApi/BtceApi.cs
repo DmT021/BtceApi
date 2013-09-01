@@ -4,207 +4,113 @@
  * 2012
  */
 
+using System.Globalization;
+using System.Threading.Tasks;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
-namespace BtcE
-{
-	public class BtceApi
-	{
+
+namespace BtcE {
+	public class BtceApi {
 		string key;
 		HMACSHA512 hashMaker;
 		UInt32 nonce;
 		readonly string instanseExchangeHost;
 		public static string ExchangeHost = "https://btc-e.com/";
-		public BtceApi( string key, string secret, string exchangeHost =null) {
+		public BtceApi( string key, string secret, string exchangeHost = null ) {
 			this.key = key;
-			hashMaker = new HMACSHA512(Encoding.ASCII.GetBytes(secret));
+			hashMaker = new HMACSHA512( Encoding.ASCII.GetBytes( secret ) );
 			nonce = UnixTime.Now;
 			this.instanseExchangeHost = exchangeHost ?? ExchangeHost;
 		}
+		
+		public UserInfo GetInfo() {return UserInfo.ReadFromJObject( QueryObject( new Dictionary<string, string>() { { "method", "getInfo" } } ) ); }
+		public async Task<UserInfo> GetInfoAsync() { return UserInfo.ReadFromJObject( await QueryObjectAsync( new Dictionary<string, string>() { { "method", "getInfo" } } ) ); }
 
-		public UserInfo GetInfo() {
-			var resultStr = Query(new Dictionary<string, string>()
-            { { "method", "getInfo" } });
-			var result = JObject.Parse(resultStr);
-			if ( result.Value<int>("success") == 0 )
-				throw new BtceException(result.Value<string>("error"));
-			return UserInfo.ReadFromJObject(result["return"] as JObject);
+		public TransHistory GetTransHistory( BtceApiTransHistoryParams args ) { return TransHistory.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<TransHistory> GetTransHistoryAsync( BtceApiTransHistoryParams args ) { return TransHistory.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
+
+		public TradeHistory GetTradeHistory( BtceApiTradeHistoryParams args ) { return TradeHistory.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<TradeHistory> GetTradeHistoryAsync( BtceApiTradeHistoryParams args ) { return TradeHistory.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
+
+		public OrderList GetOrderList( BtceApiOrderListParams args ) { return OrderList.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<OrderList> GetOrderListAsync( BtceApiOrderListParams args ) { return OrderList.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
+
+		public TradeAnswer Trade( BtceApiTradeParams args ) { return TradeAnswer.ReadFromJObject( QueryObject( args.ToDictionary() ) ); }
+		public async Task<TradeAnswer> TradeAsync( BtceApiTradeParams args ) { return TradeAnswer.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
+
+		public CancelOrderAnswer CancelOrder( int orderId ) {
+			return CancelOrderAnswer.ReadFromJObject( QueryObject( new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString() } } ) );}
+		public async Task<CancelOrderAnswer> CancelOrderAsync( int orderId ) {
+			return CancelOrderAnswer.ReadFromJObject( await QueryObjectAsync( new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString() } } ) ); }
+		UInt32 GetNonce() { return nonce++; }
+		string Query( Dictionary<string, string> args ) {
+			args.Add( "nonce", GetNonce().ToString() );
+			var data = Encoding.ASCII.GetBytes( Helper.BuildPostData( args ) );
+			var request = _prepareQueryRequest( data );
+			var reqStream = request.GetRequestStream();
+			reqStream.Write( data, 0, data.Length );
+			reqStream.Close();
+			return new StreamReader( request.GetResponse().GetResponseStream() ).ReadToEnd();
+		}
+		async Task<string> QueryAsync( Dictionary<string, string> args ) {
+			args.Add( "nonce", GetNonce().ToString() );
+			var data = Encoding.ASCII.GetBytes( Helper.BuildPostData( args ) );
+			var request = _prepareQueryRequest( data );
+			var reqStream = await request.GetRequestStreamAsync();
+			await reqStream.WriteAsync( data, 0, data.Length );
+			reqStream.Close();
+			return await new StreamReader( ( await request.GetResponseAsync() ).GetResponseStream() ).ReadToEndAsync();
 		}
 
-		public TransHistory GetTransHistory(
-			int? from = null,
-			int? count = null,
-			int? fromId = null,
-			int? endId = null,
-			bool? orderAsc = null,
-			DateTime? since = null,
-			DateTime? end = null
-			) {
-			var args = new Dictionary<string, string>()
-            { { "method", "TransHistory" } };
-
-			if ( from != null ) args.Add("from", from.Value.ToString());
-			if ( count != null ) args.Add("count", count.Value.ToString());
-			if ( fromId != null ) args.Add("from_id", fromId.Value.ToString());
-			if ( endId != null ) args.Add("end_id", endId.Value.ToString());
-			if ( orderAsc != null ) args.Add("order", orderAsc.Value ? "ASC" : "DESC");
-			if ( since != null ) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
-			if ( end != null ) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
-			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 ) throw new Exception(result.Value<string>("error"));
-			return TransHistory.ReadFromJObject(result["return"] as JObject);
+		static string Query( string url ) { return new StreamReader( Helper.PrepareRequest( url ).GetResponse().GetResponseStream() ).ReadToEnd();}
+		static async Task<string> QueryAsync( string url ) { return await new StreamReader( ( await Helper.PrepareRequest( url ).GetResponseAsync() ).GetResponseStream() ).ReadToEndAsync();}
+		private JObject QueryObject( Dictionary<string, string> args ) {
+			var result = JObject.Parse( Query( args ) );
+			Helper.CheckResponse( result );
+			return result[ "return" ] as JObject;
 		}
-
-		public TradeHistory GetTradeHistory(
-			int? from = null,
-			int? count = null,
-			int? fromId = null,
-			int? endId = null,
-			bool? orderAsc = null,
-			DateTime? since = null,
-			DateTime? end = null
-			) {
-			var args = new Dictionary<string, string>()
-            { { "method", "TradeHistory" } };
-
-			if ( from != null ) args.Add("from", from.Value.ToString());
-			if ( count != null ) args.Add("count", count.Value.ToString());
-			if ( fromId != null ) args.Add("from_id", fromId.Value.ToString());
-			if ( endId != null ) args.Add("end_id", endId.Value.ToString());
-			if ( orderAsc != null ) args.Add("order", orderAsc.Value ? "ASC" : "DESC");
-			if ( since != null ) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
-			if ( end != null ) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
-			
-			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 )
-				throw new BtceException( result.Value<string>( "error" ) );
-			return TradeHistory.ReadFromJObject(result["return"] as JObject);
+		private async Task<JObject> QueryObjectAsync( Dictionary<string, string> args ) {
+			var result = JObject.Parse( await QueryAsync( args ) );
+			Helper.CheckResponse( result );
+			return result[ "return" ] as JObject;
 		}
-
-		public OrderList GetOrderList(
-			int? from = null,
-			int? count = null,
-			int? fromId = null,
-			int? endId = null,
-			bool? orderAsc = null,
-			DateTime? since = null,
-			DateTime? end = null,
-			BtcePair? pair = null,
-			bool? active = null
-			) {
-			var args = new Dictionary<string, string>()
-            {
-                { "method", "OrderList" }
-            };
-
-			if ( from != null ) args.Add("from", from.Value.ToString());
-			if ( count != null ) args.Add("count", count.Value.ToString());
-			if ( fromId != null ) args.Add("from_id", fromId.Value.ToString());
-			if ( endId != null ) args.Add("end_id", endId.Value.ToString());
-			if ( orderAsc != null ) args.Add("order", orderAsc.Value ? "ASC" : "DESC");
-			if ( since != null ) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
-			if ( end != null ) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
-			if ( pair != null ) args.Add("pair", BtcePairHelper.ToString(pair.Value));
-			if ( active != null ) args.Add("active", active.Value ? "1" : "0");
-			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 )
-				throw new BtceException( result.Value<string>( "error" ) );
-			return OrderList.ReadFromJObject(result["return"] as JObject);
-		}
-
-		public TradeAnswer Trade(BtcePair pair, TradeType type, decimal rate, decimal amount) {
-			var args = new Dictionary<string, string>()
-            {
-                { "method", "Trade" },
-                { "pair", BtcePairHelper.ToString(pair) },
-                { "type", TradeTypeHelper.ToString(type) },
-                { "rate", DecimalToString(rate) },
-                { "amount", DecimalToString(amount) }
-            };
-			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>( "success" ) == 0 ) throw new BtceException( result.Value<string>( "error" ) );
-			return TradeAnswer.ReadFromJObject(result["return"] as JObject);
-		}
-
-		public CancelOrderAnswer CancelOrder(int orderId) {
-			var args = new Dictionary<string, string>()
-            {
-                { "method", "CancelOrder" },
-                { "order_id", orderId.ToString() }
-            };
-			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>( "success" ) == 0 ) throw new BtceException( result.Value<string>( "error" ) );
-			return CancelOrderAnswer.ReadFromJObject(result["return"] as JObject);
-		}
-
-		string Query(Dictionary<string, string> args) {
-			args.Add("nonce", GetNonce().ToString());
-
-			var dataStr = BuildPostData(args);
-			var data = Encoding.ASCII.GetBytes(dataStr);
-
-			var request = WebRequest.Create(new Uri(this.instanseExchangeHost +"tapi")) as HttpWebRequest;
-			if ( request == null )
-				throw new Exception("Non HTTP WebRequest");
-
+		
+		private HttpWebRequest _prepareQueryRequest( byte[] data ) {
+			var request = Helper.PrepareRequest( this.instanseExchangeHost + "tapi" );
 			request.Method = "POST";
 			request.Timeout = 15000;
 			request.ContentType = "application/x-www-form-urlencoded";
 			request.ContentLength = data.Length;
+			request.Headers.Add( "Key", key );
+			request.Headers.Add( "Sign", Helper.ByteArrayToString( hashMaker.ComputeHash( data ) ).ToLower() );
+			return request;
+		}
+		public static Depth GetDepth( BtcePair pair ) { return _parseDepth( Query( _prepareDepthUrl( pair ) ) ); }
+		public static async Task<Depth> GetDepthAsync( BtcePair pair ) { return _parseDepth( await QueryAsync( _prepareDepthUrl( pair ) ) ); }
 
-			request.Headers.Add("Key", key);
-			request.Headers.Add("Sign", ByteArrayToString(hashMaker.ComputeHash(data)).ToLower());
-			var reqStream = request.GetRequestStream();
-			reqStream.Write(data, 0, data.Length);
-			reqStream.Close();
-			return new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
-		}
-		static string ByteArrayToString(byte[] ba) {
-			return BitConverter.ToString(ba).Replace("-", "");
-		}
-		static string BuildPostData(Dictionary<string, string> d) {
-			StringBuilder s = new StringBuilder();
-			foreach ( var item in d ) {
-				s.AppendFormat("{0}={1}", item.Key, HttpUtility.UrlEncode(item.Value));
-				s.Append("&");
-			}
-			if ( s.Length > 0 ) s.Remove(s.Length - 1, 1);
-			return s.ToString();
-		}
+		public static Ticker GetTicker( BtcePair pair ) { return _parseTicker( Query( _prepareTickerUrl( pair ) ) ); }
+		public static async Task<Ticker> GetTickerAsync( BtcePair pair ) { return _parseTicker( await QueryAsync( _prepareTickerUrl( pair ) ) ); }
 
-		UInt32 GetNonce() {
-			return nonce++;
-		}
-		static string DecimalToString(decimal d) {
-			return d.ToString(CultureInfo.InvariantCulture);
-		}
-		public static Depth GetDepth(BtcePair pair) {
-			return Depth.ReadFromJObject( JObject.Parse( Query( string.Format( "{1}api/2/{0}/depth", BtcePairHelper.ToString( pair ), ExchangeHost) ) ) );
-		}
-		public static Ticker GetTicker(BtcePair pair) {
-			return Ticker.ReadFromJObject( JObject.Parse( Query( string.Format( "{1}api/2/{0}/ticker", BtcePairHelper.ToString( pair ), ExchangeHost) ) )[ "ticker" ] as JObject );
-		}
-		public static TradeInfo[] GetTrades(BtcePair pair) {
-			return JArray.Parse( Query( string.Format( "{1}api/2/{0}/trades", BtcePairHelper.ToString( pair ), ExchangeHost) ) ).OfType<JObject>().Select( TradeInfo.ReadFromJObject ).ToArray();
-		}
-		public static decimal GetFee(BtcePair pair) {
-			return JObject.Parse( Query( string.Format( "{1}api/2/{0}/fee", BtcePairHelper.ToString( pair ), ExchangeHost) ) ).Value<decimal>( "trade" );
-		}
-		static string Query(string url) {
-			var request = WebRequest.Create(url);
-			request.Proxy = WebRequest.DefaultWebProxy;
-			request.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
-			if ( request == null ) throw new Exception("Non HTTP WebRequest");
-			return new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
-		}
+		public static TradeInfo[] GetTrades( BtcePair pair ) { return _parseTrades( Query( _prepareTradesUrl( pair ) ) ); }
+		public static async Task<TradeInfo[]> GetTradesAsync( BtcePair pair ) { return _parseTrades( await QueryAsync( _prepareTradesUrl( pair ) ) ); }
+
+		public static decimal GetFee( BtcePair pair ) { return _parseFee( Query( _prepareFeeUrl( pair ) ) ); }
+		public static async Task<decimal> GetFeeAsync( BtcePair pair ) { return _parseFee( await QueryAsync( _prepareFeeUrl( pair ) ) ); }
+		private static Depth _parseDepth( string s ) { return Depth.ReadFromJObject( JObject.Parse( s ) ); }
+		private static Ticker _parseTicker( string s ) { return Ticker.ReadFromJObject( JObject.Parse( s )[ "ticker" ] as JObject ); }
+		private static TradeInfo[] _parseTrades( string s ) { return JArray.Parse( s ).OfType<JObject>().Select( TradeInfo.ReadFromJObject ).ToArray(); }
+		private static decimal _parseFee( string s ) { return JObject.Parse( s ).Value<decimal>( "trade" ); }
+		private static string _prepareFeeUrl( BtcePair pair ) { return _prepareUrl( pair, "fee" ); }
+		private static string _prepareTradesUrl( BtcePair pair ) { return _prepareUrl( pair, "trades" ); }
+		private static string _prepareDepthUrl( BtcePair pair ) { return _prepareUrl( pair, "depth" ); }
+		private static string _prepareTickerUrl( BtcePair pair ) { return _prepareUrl( pair, "ticker" ); }
+		private static string _prepareUrl( BtcePair pair, string method ) { return string.Format( "{1}api/2/{0}/{2}", BtcePairHelper.ToString( pair ), ExchangeHost, method ); }
 	}
 }
