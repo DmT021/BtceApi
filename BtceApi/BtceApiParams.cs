@@ -1,18 +1,13 @@
-﻿using System;
+﻿using BtcE.Utils;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
-using BtcE.Utils;
-
 namespace BtcE {
 	public abstract class BtceApiParams {
 		public readonly string method;
-		protected static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 		protected BtceApiParams( string method ) {
 			this.method = method;
 		}
-		protected virtual void AddToDictionary( Dictionary<string, string> args ) {
-			if ( method != null ) args.Add( "method", method );
-		}
+		protected virtual void AddToDictionary( Dictionary<string, string> args ) { if ( method != null ) args.Add( "method", method ); }
 		public virtual Dictionary<string, string> ToDictionary() {
 			var args = new Dictionary<string, string>();
 			this.AddToDictionary( args );
@@ -25,20 +20,19 @@ namespace BtcE {
 		public DateTime? since = null, end = null;
 		public BtceApiHistoryParams( string p ) : base( p ) { }
 		public BtceApiHistoryParams( string method, int? from = null, int? count = null, int? fromId = null, int? endId = null,
-									bool? orderAsc = null, DateTime? since = null, DateTime? end = null )
-			: base( method ) {
+									bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) : base( method ) {
 			this.from = from; this.count = count; this.fromId = fromId; this.endId = endId;
 			this.orderAsc = orderAsc; this.since = since; this.end = end;
 		}
 		protected new virtual void AddToDictionary( Dictionary<string, string> args ) {
 			base.AddToDictionary( args );
-			if ( from != null ) args.Add( "from", from.Value.ToString( InvariantCulture ) );
-			if ( count != null ) args.Add( "count", count.Value.ToString( InvariantCulture ) );
-			if ( fromId != null ) args.Add( "from_id", fromId.Value.ToString( InvariantCulture ) );
-			if ( endId != null ) args.Add( "end_id", endId.Value.ToString( InvariantCulture ) );
+			if ( from != null ) args.Add( "from", from.Value.ToString( Helper.InvariantCulture ) );
+			if ( count != null ) args.Add( "count", count.Value.ToString( Helper.InvariantCulture ) );
+			if ( fromId != null ) args.Add( "from_id", fromId.Value.ToString( Helper.InvariantCulture ) );
+			if ( endId != null ) args.Add( "end_id", endId.Value.ToString( Helper.InvariantCulture ) );
 			if ( orderAsc != null ) args.Add( "order", orderAsc.Value ? "ASC" : "DESC" );
-			if ( since != null ) args.Add( "since", UnixTime.GetFromDateTime( since.Value ).ToString( InvariantCulture ) );
-			if ( end != null ) args.Add( "end", UnixTime.GetFromDateTime( end.Value ).ToString( InvariantCulture ) );
+			if ( since != null ) args.Add( "since", UnixTime.GetFromDateTime( since.Value ).ToString( Helper.InvariantCulture ) );
+			if ( end != null ) args.Add( "end", UnixTime.GetFromDateTime( end.Value ).ToString( Helper.InvariantCulture ) );
 		}
 		public new virtual Dictionary<string, string> ToDictionary() {
 			var args = new Dictionary<string, string>();
@@ -70,7 +64,7 @@ namespace BtcE {
 			) :
 			base( "OrderList", from, count, fromId, endId, orderAsc, since, end ) {
 			this.Pair = pair;
-			this.Active = Active;
+			this.Active = active;
 		}
 		protected new virtual void AddToDictionary( Dictionary<string, string> args ) {
 			base.AddToDictionary( args );

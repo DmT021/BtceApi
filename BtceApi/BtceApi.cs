@@ -1,11 +1,10 @@
 ﻿/*
  * Base for making api class for btc-e.com
  * DmT
- * 2012
+ * kasthack
+ * 2012-2013
  */
 
-using System.Globalization;
-using System.Threading.Tasks;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BtcE {
 	public class BtceApi {
@@ -67,7 +67,7 @@ namespace BtcE {
 		
 		UInt32 GetNonce() { return nonce++; }
 		string Query( Dictionary<string, string> args ) {
-			args.Add( "nonce", GetNonce().ToString() );
+			args.Add( "nonce", GetNonce().ToString(Helper.InvariantCulture) );
 			var data = Encoding.ASCII.GetBytes( Helper.BuildPostData( args ) );
 			var request = _prepareQueryRequest( data );
 			var reqStream = request.GetRequestStream();
@@ -87,17 +87,15 @@ namespace BtcE {
 
 		static string Query( string url ) { return new StreamReader( Helper.PrepareRequest( url ).GetResponse().GetResponseStream() ).ReadToEnd();}
 		static async Task<string> QueryAsync( string url ) { return await new StreamReader( ( await Helper.PrepareRequest( url ).GetResponseAsync() ).GetResponseStream() ).ReadToEndAsync();}
-		private JObject QueryObject( Dictionary<string, string> args ) {
-			var result = JObject.Parse( Query( args ) );
-			Helper.CheckResponse( result );
+		private JObject QueryObject( Dictionary<string, string> args ) { return _parseQueryObject( Query( args ) ); }
+		private async Task<JObject> QueryObjectAsync( Dictionary<string, string> args ) { return _parseQueryObject( await QueryAsync( args ) );}
+		private JObject _parseQueryObject(string s)
+		{
+			var result = JObject.Parse( s );
+			if ( result.Value<int>( "success" ) == 0 )
+				throw new Exception( result.Value<string>( "error" ) );
 			return result[ "return" ] as JObject;
 		}
-		private async Task<JObject> QueryObjectAsync( Dictionary<string, string> args ) {
-			var result = JObject.Parse( await QueryAsync( args ) );
-			Helper.CheckResponse( result );
-			return result[ "return" ] as JObject;
-		}
-		
 		private HttpWebRequest _prepareQueryRequest( byte[] data ) {
 			var request = Helper.PrepareRequest( this.instanseExchangeHost + "tapi" );
 			request.Method = "POST";
