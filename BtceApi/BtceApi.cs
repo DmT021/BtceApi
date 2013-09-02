@@ -23,6 +23,8 @@ namespace BtcE {
 		UInt32 nonce;
 		readonly string instanseExchangeHost;
 		public static string ExchangeHost = "https://btc-e.com/";
+
+		private static Lazy<Dictionary<string, string>> _InfoQueryArgs = new Lazy<Dictionary<string, string>>(()=> new Dictionary<string, string>() { { "method", "getInfo" } });
 		public BtceApi( string key, string secret, string exchangeHost = null ) {
 			this.key = key;
 			hashMaker = new HMACSHA512( Encoding.ASCII.GetBytes( secret ) );
@@ -30,8 +32,8 @@ namespace BtcE {
 			this.instanseExchangeHost = exchangeHost ?? ExchangeHost;
 		}
 		
-		public UserInfo GetInfo() {return UserInfo.ReadFromJObject( QueryObject( new Dictionary<string, string>() { { "method", "getInfo" } } ) ); }
-		public async Task<UserInfo> GetInfoAsync() { return UserInfo.ReadFromJObject( await QueryObjectAsync( new Dictionary<string, string>() { { "method", "getInfo" } } ) ); }
+		public UserInfo GetInfo() {return UserInfo.ReadFromJObject(QueryObject( _InfoQueryArgs.Value ) ); }
+		public async Task<UserInfo> GetInfoAsync() { return UserInfo.ReadFromJObject( await QueryObjectAsync( _InfoQueryArgs.Value ) ); }
 
 		public TransHistory GetTransHistory(int? from = null, int? count = null, int? fromId = null, int? endId = null,bool? orderAsc = null, DateTime? since = null, DateTime? end = null){
 			return GetTransHistory(new BtceApiTransHistoryParams(from, count, fromId, endId, orderAsc, since, end));}
@@ -59,16 +61,12 @@ namespace BtcE {
 		public async Task<TradeAnswer> TradeAsync( BtcePair pair, TradeType type, decimal rate, decimal amount ) { return await TradeAsync( new BtceApiTradeParams( pair, type, rate, amount ) ); }
 		public async Task<TradeAnswer> TradeAsync( BtceApiTradeParams args ) { return TradeAnswer.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
 
-
-		public CancelOrderAnswer CancelOrder( int orderId ) {
-			return CancelOrderAnswer.ReadFromJObject( QueryObject( new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString() } } ) );}
-		public async Task<CancelOrderAnswer> CancelOrderAsync( int orderId ) {
-			return CancelOrderAnswer.ReadFromJObject( await QueryObjectAsync( new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString() } } ) ); }
-		
+		public CancelOrderAnswer CancelOrder( int orderId ) {return CancelOrderAnswer.ReadFromJObject( QueryObject( _cCancelOrderArgs(orderId)  ) );}
+		public async Task<CancelOrderAnswer> CancelOrderAsync( int orderId ) {return CancelOrderAnswer.ReadFromJObject( await QueryObjectAsync( _cCancelOrderArgs(orderId) ) ); }
 		UInt32 GetNonce() { return nonce++; }
+		
 		string Query( Dictionary<string, string> args ) {
-			args.Add( "nonce", GetNonce().ToString(Helper.InvariantCulture) );
-			var data = Encoding.ASCII.GetBytes( Helper.BuildPostData( args ) );
+			var data = _preparePostData( args );
 			var request = _prepareQueryRequest( data );
 			var reqStream = request.GetRequestStream();
 			reqStream.Write( data, 0, data.Length );
@@ -76,21 +74,19 @@ namespace BtcE {
 			return new StreamReader( request.GetResponse().GetResponseStream() ).ReadToEnd();
 		}
 		async Task<string> QueryAsync( Dictionary<string, string> args ) {
-			args.Add( "nonce", GetNonce().ToString() );
-			var data = Encoding.ASCII.GetBytes( Helper.BuildPostData( args ) );
+			var data = _preparePostData(args);
 			var request = _prepareQueryRequest( data );
 			var reqStream = await request.GetRequestStreamAsync();
 			await reqStream.WriteAsync( data, 0, data.Length );
 			reqStream.Close();
 			return await new StreamReader( ( await request.GetResponseAsync() ).GetResponseStream() ).ReadToEndAsync();
 		}
-
-		static string Query( string url ) { return new StreamReader( Helper.PrepareRequest( url ).GetResponse().GetResponseStream() ).ReadToEnd();}
-		static async Task<string> QueryAsync( string url ) { return await new StreamReader( ( await Helper.PrepareRequest( url ).GetResponseAsync() ).GetResponseStream() ).ReadToEndAsync();}
 		private JObject QueryObject( Dictionary<string, string> args ) { return _parseQueryObject( Query( args ) ); }
 		private async Task<JObject> QueryObjectAsync( Dictionary<string, string> args ) { return _parseQueryObject( await QueryAsync( args ) );}
-		private JObject _parseQueryObject(string s)
-		{
+		static string Query( string url ) { return new StreamReader( Helper.PrepareRequest( url ).GetResponse().GetResponseStream() ).ReadToEnd();}
+		static async Task<string> QueryAsync( string url ) { return await new StreamReader( ( await Helper.PrepareRequest( url ).GetResponseAsync() ).GetResponseStream() ).ReadToEndAsync();}
+		
+		private JObject _parseQueryObject(string s) {
 			var result = JObject.Parse( s );
 			if ( result.Value<int>( "success" ) == 0 )
 				throw new Exception( result.Value<string>( "error" ) );
@@ -106,6 +102,7 @@ namespace BtcE {
 			request.Headers.Add( "Sign", Helper.ByteArrayToString( hashMaker.ComputeHash( data ) ).ToLower() );
 			return request;
 		}
+		
 		public static Depth GetDepth( BtcePair pair ) { return _parseDepth( Query( _prepareDepthUrl( pair ) ) ); }
 		public static async Task<Depth> GetDepthAsync( BtcePair pair ) { return _parseDepth( await QueryAsync( _prepareDepthUrl( pair ) ) ); }
 
@@ -127,5 +124,7 @@ namespace BtcE {
 		private static string _prepareDepthUrl( BtcePair pair ) { return _prepareUrl( pair, "depth" ); }
 		private static string _prepareTickerUrl( BtcePair pair ) { return _prepareUrl( pair, "ticker" ); }
 		private static string _prepareUrl( BtcePair pair, string method ) { return string.Format( "{1}api/2/{0}/{2}", BtcePairHelper.ToString( pair ), ExchangeHost, method ); }
+		private byte[] _preparePostData( Dictionary<string, string> args ) { args.Add( "nonce", GetNonce().ToString() ); return Encoding.ASCII.GetBytes( Helper.BuildPostData( args ) ); }
+		private static Dictionary<string, string> _cCancelOrderArgs( int orderId ) { return new Dictionary<string, string>() { { "method", "CancelOrder" }, { "order_id", orderId.ToString(Helper.InvariantCulture) } }; }
 	}
 }

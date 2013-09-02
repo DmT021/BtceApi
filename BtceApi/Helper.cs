@@ -5,8 +5,10 @@ using System.Net;
 using System.Text;
 using System.Web;
 namespace BtcE {
-	internal static class Helper {
-		internal static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+	internal static class Helper
+	{
+		private static Lazy<CultureInfo> _InvariantCulture = new Lazy<CultureInfo>(() => CultureInfo.InvariantCulture);
+		internal static CultureInfo InvariantCulture { get { return _InvariantCulture.Value; } }
 		internal static string ByteArrayToString( byte[] ba ) { return BitConverter.ToString( ba ).Replace( "-", "" ); }
 		internal static string BuildPostData( Dictionary<string, string> d ) {
 			var s = new StringBuilder();
