@@ -68,7 +68,7 @@ namespace BtcE {
 		}
 		protected new virtual void AddToDictionary( Dictionary<string, string> args ) {
 			base.AddToDictionary( args );
-			if ( Pair != null ) args.Add( "pair", BtcePairHelper.ToString( Pair.Value ) );
+			if ( Pair != null ) args.Add( "pair", BtcePairHelper.ToString( Pair.Value) );
 			if ( Active != null ) args.Add( "active", Active.Value ? "1" : "0" );
 		}
 		public new virtual Dictionary<string, string> ToDictionary() {
@@ -87,9 +87,10 @@ namespace BtcE {
 		}
 		protected new virtual void AddToDictionary( Dictionary<string, string> args ) {
 			base.AddToDictionary( args );
+			args.Add( "pair", BtcePairHelper.ToString(pair));
 			args.Add( "type", TradeTypeHelper.ToString( type ) );
 			args.Add( "rate", Helper.DecimalToString( rate ) );
-			args.Add( "amount", Helper.DecimalToString( amount ) );
+			args.Add( "amount", Helper.DecimalToString( decimal.Round( amount, 8 ) ) );//btc-e throws error when >8 decimals used
 		}
 		public new virtual Dictionary<string, string> ToDictionary() {
 			var args = new Dictionary<string, string>();
