@@ -4,8 +4,6 @@
  * 2012
  */
 
-using BtcE.Utils;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +13,8 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using BtcE.Utils;
+using Newtonsoft.Json.Linq;
 namespace BtcE
 {
 	public class BtceApi
@@ -29,9 +29,9 @@ namespace BtcE
 		}
 		public UserInfo GetInfo() {
 			var resultStr = Query(new Dictionary<string, string>()
-            {
-                { "method", "getInfo" }
-            });
+			{
+					{ "method", "getInfo" }
+			});
 			var result = JObject.Parse(resultStr);
 			if ( result.Value<int>("success") == 0 )
 				throw new Exception(result.Value<string>("error"));
@@ -48,9 +48,9 @@ namespace BtcE
 			DateTime? end = null
 			) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "TransHistory" }
-            };
+						{
+								{ "method", "TransHistory" }
+						};
 
 			if ( from != null ) args.Add("from", from.Value.ToString());
 			if ( count != null ) args.Add("count", count.Value.ToString());
@@ -75,9 +75,9 @@ namespace BtcE
 			DateTime? end = null
 			) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "TradeHistory" }
-            };
+						{
+								{ "method", "TradeHistory" }
+						};
 
 			if ( from != null ) args.Add("from", from.Value.ToString());
 			if ( count != null ) args.Add("count", count.Value.ToString());
@@ -105,9 +105,9 @@ namespace BtcE
 			bool? active = null
 			) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "OrderList" }
-            };
+						{
+								{ "method", "OrderList" }
+						};
 
 			if ( from != null ) args.Add("from", from.Value.ToString());
 			if ( count != null ) args.Add("count", count.Value.ToString());
@@ -126,13 +126,13 @@ namespace BtcE
 
 		public TradeAnswer Trade(BtcePair pair, TradeType type, decimal rate, decimal amount) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "Trade" },
-                { "pair", BtcePairHelper.ToString(pair) },
-                { "type", TradeTypeHelper.ToString(type) },
-                { "rate", DecimalToString(rate) },
-                { "amount", DecimalToString(amount) }
-            };
+						{
+								{ "method", "Trade" },
+								{ "pair", BtcePairHelper.ToString(pair) },
+								{ "type", TradeTypeHelper.ToString(type) },
+								{ "rate", DecimalToString(rate) },
+								{ "amount", DecimalToString(amount) }
+						};
 			var result = JObject.Parse(Query(args));
 			if ( result.Value<int>("success") == 0 )
 				throw new Exception(result.Value<string>("error"));
@@ -141,10 +141,10 @@ namespace BtcE
 
 		public CancelOrderAnswer CancelOrder(int orderId) {
 			var args = new Dictionary<string, string>()
-            {
-                { "method", "CancelOrder" },
-                { "order_id", orderId.ToString() }
-            };
+						{
+								{ "method", "CancelOrder" },
+								{ "order_id", orderId.ToString() }
+						};
 			var result = JObject.Parse(Query(args));
 			if ( result.Value<int>("success") == 0 )
 				throw new Exception(result.Value<string>("error"));

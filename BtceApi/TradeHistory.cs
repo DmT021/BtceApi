@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace BtcE
 {
@@ -27,14 +27,34 @@ namespace BtcE
 				OrderId = o.Value<int>("order_id")
 			};
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1} [{2}] {3}x{4} {{{5}}} {6}",
+				this.Pair,
+				this.Timestamp,
+				this.Type,
+				this.Rate,
+				this.Amount,
+				this.OrderId,
+				this.IsYourOrder);
+		}
 	}
+
 	public class TradeHistory
 	{
 		public Dictionary<int, Trade> List { get; private set; }
-		public static TradeHistory ReadFromJObject(JObject o) {
-			return new TradeHistory() {
+		public static TradeHistory ReadFromJObject(JObject o)
+		{
+			return new TradeHistory()
+			{
 				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Trade.ReadFromJObject(item.Value as JObject))
 			};
+		}
+
+		public override string ToString()
+		{
+			return string.Format("Trades: {0}", this.List.Count);
 		}
 	}
 }
