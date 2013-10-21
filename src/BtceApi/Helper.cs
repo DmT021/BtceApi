@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Threading.Tasks;
 namespace BtcE {
 	internal static class Helper
 	{
@@ -24,5 +25,18 @@ namespace BtcE {
 			if ( request == null ) throw new Exception( "Non HTTP WebRequest" );
 			return request;
 		}
+
+        internal static T SyncTask<T>( Task<T> task ) {
+            VSyncTask( task );
+            return task.Result;
+        }
+        internal static void VSyncTask( Task task ) {
+            //not started
+            if ( task.Status == TaskStatus.Created )
+                task.Start();
+            //not finished
+            if ( task.Status != TaskStatus.Canceled && task.Status != TaskStatus.Faulted && task.Status != TaskStatus.RanToCompletion )
+                task.Wait();
+        }
 	}
 }

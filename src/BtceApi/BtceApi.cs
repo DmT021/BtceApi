@@ -24,7 +24,7 @@ namespace BtcE {
         readonly string _instanseExchangeHost;
         public static string ExchangeHost = "https://btc-e.com/";
 
-        private static Lazy<Dictionary<string, string>> _InfoQueryArgs = new Lazy<Dictionary<string, string>>( () => new Dictionary<string, string>() { { "method", "getInfo" } } );
+        private static readonly Lazy<Dictionary<string, string>> InfoQueryArgs = new Lazy<Dictionary<string, string>>( () => new Dictionary<string, string>() { { "method", "getInfo" } } );
         public BtceApi( string key, string secret, string exchangeHost = null ) {
             this._key = key;
             hashMaker = new HMACSHA512( Encoding.ASCII.GetBytes( secret ) );
@@ -32,21 +32,21 @@ namespace BtcE {
             this._instanseExchangeHost = exchangeHost ?? ExchangeHost;
         }
 
-        public UserInfo GetInfo() { var v = this.GetInfoAsync(); v.Wait(); return v.Result; }
+        public UserInfo GetInfo() { return Helper.SyncTask(this.GetInfoAsync()); }
         public TransHistory GetTransHistory( int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) {
             return GetTransHistory( new BtceApiTransHistoryParams( from, count, fromId, endId, orderAsc, since, end ) );}
-        public TransHistory GetTransHistory(BtceApiTransHistoryParams args) { var v = this.GetTransHistoryAsync( args ); v.Wait(); return v.Result; }
+        public TransHistory GetTransHistory(BtceApiTransHistoryParams args) { return Helper.SyncTask(this.GetTransHistoryAsync( args )); }
         public TradeHistory GetTradeHistory( int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) {
             return GetTradeHistory( new BtceApiTradeHistoryParams( from, count, fromId, endId, orderAsc, since, end ) );}
-        public TradeHistory GetTradeHistory( BtceApiTradeHistoryParams args ) { var v = this.GetTradeHistoryAsync( args ); v.Wait(); return v.Result; }
+        public TradeHistory GetTradeHistory( BtceApiTradeHistoryParams args ) { return Helper.SyncTask(this.GetTradeHistoryAsync( args )); }
         public OrderList GetOrderList( int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) {
             return GetOrderList( new BtceApiOrderListParams( from, count, fromId, endId, orderAsc, since, end ) );}
-        public OrderList GetOrderList( BtceApiOrderListParams args ) { var v = this.GetOrderListAsync( args ); v.Wait(); return v.Result; }
+        public OrderList GetOrderList( BtceApiOrderListParams args ) { return Helper.SyncTask(this.GetOrderListAsync( args )); }
         public TradeAnswer Trade( BtcePair pair, TradeType type, decimal rate, decimal amount ) { return Trade( new BtceApiTradeParams( pair, type, rate, amount ) ); }
-        public TradeAnswer Trade( BtceApiTradeParams args ) { var v = this.TradeAsync( args ); v.Wait(); return v.Result; }
-        public CancelOrderAnswer CancelOrder( int orderId ) { var v = this.CancelOrderAsync( orderId ); v.Wait(); return v.Result; }
+        public TradeAnswer Trade( BtceApiTradeParams args ) { return Helper.SyncTask(this.TradeAsync( args )); }
+        public CancelOrderAnswer CancelOrder( int orderId ) { return Helper.SyncTask(this.CancelOrderAsync( orderId )); }
 
-        public async Task<UserInfo> GetInfoAsync() { return UserInfo.ReadFromJObject( await QueryObjectAsync( _InfoQueryArgs.Value ) ); }
+        public async Task<UserInfo> GetInfoAsync() { return UserInfo.ReadFromJObject( await QueryObjectAsync( InfoQueryArgs.Value ) ); }
         public async Task<TradeHistory> GetTradeHistoryAsync( int? from = null, int? count = null, int? fromId = null, int? endId = null, bool? orderAsc = null, DateTime? since = null, DateTime? end = null ) {
             return await GetTradeHistoryAsync( new BtceApiTradeHistoryParams( from, count, fromId, endId, orderAsc, since, end ) );}
         public async Task<TradeHistory> GetTradeHistoryAsync( BtceApiTradeHistoryParams args ) { return TradeHistory.ReadFromJObject( await QueryObjectAsync( args.ToDictionary() ) ); }
@@ -61,10 +61,10 @@ namespace BtcE {
         public async Task<CancelOrderAnswer> CancelOrderAsync( int orderId ) { return CancelOrderAnswer.ReadFromJObject( await QueryObjectAsync( _cCancelOrderArgs( orderId ) ) ); }
         
 
-        public static Depth GetDepth(BtcePair pair) { var v = GetDepthAsync(pair); v.Wait(); return v.Result; }
-        public static decimal GetFee( BtcePair pair ) { var v = GetFeeAsync( pair ); v.Wait(); return v.Result;}
-        public static Ticker GetTicker( BtcePair pair ) { var v = GetTickerAsync( pair ); v.Wait(); return v.Result; }
-        public static TradeInfo[] GetTrades( BtcePair pair ) { var v = GetTradesAsync( pair ); v.Wait(); return v.Result; }
+        public static Depth GetDepth(BtcePair pair) { return Helper.SyncTask(GetDepthAsync(pair)); }
+        public static decimal GetFee( BtcePair pair ) { return Helper.SyncTask(GetFeeAsync( pair ));}
+        public static Ticker GetTicker( BtcePair pair ) { return Helper.SyncTask(GetTickerAsync( pair )); }
+        public static TradeInfo[] GetTrades( BtcePair pair ) { return Helper.SyncTask(GetTradesAsync( pair ) ); }
         
         public static async Task<Depth> GetDepthAsync( BtcePair pair ) { return Depth.ReadFromJObject( JObject.Parse( await QueryAsync( _prepareUrl( pair, "depth" ) ) ) ); }
         public static async Task<decimal> GetFeeAsync( BtcePair pair ) { return JObject.Parse( await QueryAsync( _prepareUrl( pair, "fee" ) ) ).Value<decimal>( "trade" ); }
