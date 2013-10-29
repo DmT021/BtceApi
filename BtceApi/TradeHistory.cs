@@ -27,6 +27,18 @@ namespace BtcE
 				OrderId = o.Value<int>("order_id")
 			};
 		}
+
+        public Trade() { }
+        public Trade(BtcePair pair, TradeType type, decimal amount, decimal rate, int orderid, bool isyourorder, UInt32 timestamp)
+        {
+            Pair = pair;
+            Type = type;
+            Amount = amount;
+            Rate = rate;
+            OrderId = orderid;
+            IsYourOrder = isyourorder;
+            Timestamp = timestamp;
+        }
 	}
 	public class TradeHistory
 	{
