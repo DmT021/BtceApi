@@ -104,25 +104,24 @@ namespace BtcE
 			BtcePair? pair = null,
 			bool? active = null
 			) {
-			var args = new Dictionary<string, string>()
-            {
-                { "method", "OrderList" }
-            };
-
-			if ( from != null ) args.Add("from", from.Value.ToString());
-			if ( count != null ) args.Add("count", count.Value.ToString());
-			if ( fromId != null ) args.Add("from_id", fromId.Value.ToString());
-			if ( endId != null ) args.Add("end_id", endId.Value.ToString());
-			if ( orderAsc != null ) args.Add("order", orderAsc.Value ? "ASC" : "DESC");
-			if ( since != null ) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
-			if ( end != null ) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
-			if ( pair != null ) args.Add("pair", BtcePairHelper.ToString(pair.Value));
-			if ( active != null ) args.Add("active", active.Value ? "1" : "0");
-			var result = JObject.Parse(Query(args));
-			if ( result.Value<int>("success") == 0 )
-				throw new Exception(result.Value<string>("error"));
-			return OrderList.ReadFromJObject(result["return"] as JObject);
+			
+		    throw new Exception("GetOrderList() is depricated and will no longer be supported as of Nov. 1st 2013. Please use GetActiveOrders() instead.");
 		}
+
+        public OrderList GetActiveOrders(
+            BtcePair? pair = null
+            )
+        {
+            var args = new Dictionary<string, string>()
+            {
+                { "method", "ActiveOrders" }
+            };
+            if (pair != null) args.Add("pair", BtcePairHelper.ToString(pair.Value));
+            var result = JObject.Parse(Query(args));
+            if (result.Value<int>("success") == 0)
+                throw new Exception(result.Value<string>("error"));
+            return OrderList.ReadFromJObject(result["return"] as JObject);
+        }
 
 		public TradeAnswer Trade(BtcePair pair, TradeType type, decimal rate, decimal amount) {
 			var args = new Dictionary<string, string>()
