@@ -29,10 +29,17 @@ namespace BtcE
 	public class OrderList
 	{
 		public Dictionary<int, Order> List { get; private set; }
-		public static OrderList ReadFromJObject(JObject o) {
-			return new OrderList() {
-				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Order.ReadFromJObject(item.Value as JObject))
-			};
+		public static OrderList ReadFromJObject(JObject o)
+        {
+            OrderList order_list = new OrderList();
+            order_list.List = new Dictionary<int, Order>();
+
+            foreach (KeyValuePair<string, JToken> element in o)
+            {
+                order_list.List.Add(int.Parse(element.Key), Order.ReadFromJObject(element.Value as JObject));
+            }
+
+            return order_list;
 		}
 	}
 }
