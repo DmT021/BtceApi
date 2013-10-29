@@ -31,10 +31,17 @@ namespace BtcE
 	public class TradeHistory
 	{
 		public Dictionary<int, Trade> List { get; private set; }
-		public static TradeHistory ReadFromJObject(JObject o) {
-			return new TradeHistory() {
-				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Trade.ReadFromJObject(item.Value as JObject))
-			};
+		public static TradeHistory ReadFromJObject(JObject o)
+		{
+			TradeHistory trade_hist = new TradeHistory();
+            trade_hist.List = new Dictionary<int, Trade>();
+
+            foreach (KeyValuePair<string, JToken> element in o)
+            {
+                trade_hist.List.Add(int.Parse(element.Key), Trade.ReadFromJObject(element.Value as JObject));
+            }
+
+            return trade_hist;
 		}
 	}
 }
