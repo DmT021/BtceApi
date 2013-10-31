@@ -24,6 +24,16 @@ namespace BtcE
 				Status = o.Value<int>("status")
 			};
 		}
+
+        public Order() { }
+        public Order(BtcePair pair, TradeType type, decimal amount, decimal rate, UInt32 timestamp, int status)
+        {
+            Pair = pair;
+            Amount = amount;
+            Rate = rate;
+            TimestampCreated = timestamp;
+            Status = status;
+        }
 	}
 
 	public class OrderList
