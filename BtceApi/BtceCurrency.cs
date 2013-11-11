@@ -4,16 +4,16 @@ namespace BtcE
 	public enum BtceCurrency
 	{
 		Unknown,
-		btc,
-		eur,
-		ftc,
-		ltc,
-		nmc,
-		nvc,
-		trc,
-		ppc,
-		usd,
-		rur
+		BTC,
+		EUR,
+		FTC,
+		LTC,
+		NMC,
+		NVC,
+		TRC,
+		PPC,
+		USD,
+		RUR
 	}
 	public class BtceCurrencyHelper
 	{
