@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{266935B5-B5B2-462C-8308-20E2BD1360B5}</ProjectGuid>
+    <ProjectGuid>{C605F747-ABB3-406F-B85D-CBB49F758C9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BtcE</RootNamespace>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Diagnostics.Contracts;
 
 namespace BtcE
 {
@@ -51,10 +52,12 @@ namespace BtcE
 		/// <returns>Tuple of int,int where Item1 is Amount's precision and Item2 is Price's precision</returns>
 		public static Tuple<int, int> GetPrecision(BtcePair btcPair)
 		{
+			Contract.Requires(btcPair != null);
+
 			var pairPrecision = precisions.SingleOrDefault(x => x.Item1 == btcPair);
 			if (pairPrecision == default(Tuple<BtcePair, int, int>))
 			{
-				return Tuple.Create(1, 3);
+				return Tuple.Create(4, 8); // ex. 12.3456 USD for 0.12345678 BTC: 
 			}
 			else
 			{

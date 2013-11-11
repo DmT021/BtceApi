@@ -7,10 +7,12 @@ namespace BtcE
 	{
 		public decimal Price { get; private set; }
 		public decimal Amount { get; private set; }
-		public static OrderInfo ReadFromJObject(JArray o) {
-			if ( o == null )
+		public static OrderInfo ReadFromJObject(JArray o)
+		{
+			if (o == null)
 				return null;
-			return new OrderInfo() {
+			return new OrderInfo()
+			{
 				Price = o.Value<decimal>(0),
 				Amount = o.Value<decimal>(1),
 			};
@@ -20,11 +22,17 @@ namespace BtcE
 	{
 		public List<OrderInfo> Asks { get; private set; }
 		public List<OrderInfo> Bids { get; private set; }
-		public static Depth ReadFromJObject(JObject o) {
-			return new Depth() {
+		public static Depth ReadFromJObject(JObject o)
+		{
+			return new Depth()
+			{
 				Asks = o["asks"].OfType<JArray>().Select(order => OrderInfo.ReadFromJObject(order as JArray)).ToList(),
 				Bids = o["bids"].OfType<JArray>().Select(order => OrderInfo.ReadFromJObject(order as JArray)).ToList()
 			};
+		}
+		public override string ToString()
+		{
+			return string.Format("Bids: {0} Asks: {1}", this.Asks.Count, this.Bids.Count);
 		}
 	}
 }
