@@ -14,10 +14,12 @@ namespace BtcE
 		public int OrderId { get; private set; }
 		public bool IsYourOrder { get; private set; }
 		public UInt32 Timestamp { get; private set; }
-		public static Trade ReadFromJObject(JObject o) {
-			if ( o == null )
+		public static Trade ReadFromJObject(JObject o)
+		{
+			if (o == null)
 				return null;
-			return new Trade() {
+			return new Trade()
+			{
 				Pair = BtcePairHelper.FromString(o.Value<string>("pair")),
 				Type = TradeTypeHelper.FromString(o.Value<string>("type")),
 				Amount = o.Value<decimal>("amount"),
@@ -39,8 +41,19 @@ namespace BtcE
 				this.OrderId,
 				this.IsYourOrder);
 		}
-	}
+		public Trade() { }
+		public Trade(BtcePair pair, TradeType type, decimal amount, decimal rate, int orderId, bool isYourOrder, UInt32 timestamp)
+		{
+			Pair = pair;
+			Type = type;
+			Amount = amount;
+			Rate = rate;
+			OrderId = orderId;
+			IsYourOrder = isYourOrder;
+			Timestamp = timestamp;
+		}
 
+	}
 	public class TradeHistory
 	{
 		public Dictionary<int, Trade> List { get; private set; }
@@ -48,7 +61,7 @@ namespace BtcE
 		{
 			return new TradeHistory()
 			{
-				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Trade.ReadFromJObject(item.Value as JObject))
+				List = ((IDictionary<string, JToken>)o).ToDictionary(item => int.Parse(item.Key), item => Trade.ReadFromJObject(item.Value as JObject))
 			};
 		}
 

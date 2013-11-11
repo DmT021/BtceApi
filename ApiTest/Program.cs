@@ -8,7 +8,8 @@ namespace ApiTest
 {
 	class Program
 	{
-		static void Main(string[] args) {
+		static void Main(string[] args)
+		{
 			var ticker = BtceApi.GetTicker(BtcePair.btc_usd);
 			var trades = BtceApi.GetTrades(BtcePair.btc_usd);
 			var btcusdDepth = BtceApi.GetDepth(BtcePair.usd_rur);
@@ -18,7 +19,8 @@ namespace ApiTest
 			var info = btceApi.GetInfo();
 			var transHistory = btceApi.GetTransHistory();
 			var tradeHistory = btceApi.GetTradeHistory(count: 20);
-			var orderList = btceApi.GetOrderList();
+			//var orderList = btceApi.GetOrderList();  ** DEPRICATED ** use GetActiveOrders() instead!
+			var orderList = btceApi.GetActiveOrders();
 			var tradeAnswer = btceApi.Trade(BtcePair.btc_usd, TradeType.Sell, 20, 0.1m);
 			var cancelAnswer = btceApi.CancelOrder(tradeAnswer.OrderId);
 		}

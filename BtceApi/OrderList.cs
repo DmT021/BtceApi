@@ -12,10 +12,12 @@ namespace BtcE
 		public decimal Rate { get; private set; }
 		public UInt32 TimestampCreated { get; private set; }
 		public int Status { get; private set; }
-		public static Order ReadFromJObject(JObject o) {
-			if ( o == null )
+		public static Order ReadFromJObject(JObject o)
+		{
+			if (o == null)
 				return null;
-			return new Order() {
+			return new Order()
+			{
 				Pair = BtcePairHelper.FromString(o.Value<string>("pair")),
 				Type = TradeTypeHelper.FromString(o.Value<string>("type")),
 				Amount = o.Value<decimal>("amount"),
@@ -24,13 +26,25 @@ namespace BtcE
 				Status = o.Value<int>("status")
 			};
 		}
+
+		public Order() { }
+		public Order(BtcePair pair, TradeType type, decimal amount, decimal rate, UInt32 timestamp, int status)
+		{
+			Pair = pair;
+			Amount = amount;
+			Rate = rate;
+			TimestampCreated = timestamp;
+			Status = status;
+		}
 	}
 
 	public class OrderList
 	{
 		public Dictionary<int, Order> List { get; private set; }
-		public static OrderList ReadFromJObject(JObject o) {
-			return new OrderList() {
+		public static OrderList ReadFromJObject(JObject o)
+		{
+			return new OrderList()
+			{
 				List = ((IDictionary<string, JToken>)o).ToDictionary(item => int.Parse(item.Key), item => Order.ReadFromJObject(item.Value as JObject))
 			};
 		}

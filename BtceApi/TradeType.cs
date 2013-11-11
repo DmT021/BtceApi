@@ -10,6 +10,7 @@ namespace BtcE
 	public class TradeTypeHelper
 	{
 		public static TradeType FromString(string s) {
+			s = s.ToLower();
 			switch ( s ) {
 				case "sell":
 					return TradeType.Sell;
