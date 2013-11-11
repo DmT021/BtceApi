@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 namespace BtcE
 {
 	public class OrderInfo
@@ -20,14 +20,14 @@ namespace BtcE
 	}
 	public class Depth
 	{
-		public List<OrderInfo> Asks { get; private set; }
-		public List<OrderInfo> Bids { get; private set; }
+		public OrderInfo[] Asks { get; private set; }
+		public OrderInfo[] Bids { get; private set; }
 		public static Depth ReadFromJObject(JObject o)
 		{
 			return new Depth()
 			{
-				Asks = o["asks"].OfType<JArray>().Select(order => OrderInfo.ReadFromJObject(order as JArray)).ToList(),
-				Bids = o["bids"].OfType<JArray>().Select(order => OrderInfo.ReadFromJObject(order as JArray)).ToList()
+				Asks = o["asks"].OfType<JArray>().Select(order => OrderInfo.ReadFromJObject(order as JArray)).ToArray(),
+				Bids = o["bids"].OfType<JArray>().Select(order => OrderInfo.ReadFromJObject(order as JArray)).ToArray()
 			};
 		}
 		public override string ToString()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Diagnostics.Contracts;
 
@@ -12,8 +12,11 @@ namespace BtcE
 		ltc_btc,
 		ltc_usd,
 		ltc_rur,
+		ltc_eur,
 		nmc_btc,
+		nmc_usd,
 		nvc_btc,
+		nvc_usd,
 		usd_rur,
 		eur_usd,
 		trc_btc,

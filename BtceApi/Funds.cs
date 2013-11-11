@@ -1,36 +1,67 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
-namespace BtcE
-{
-	public class Funds
-	{
-		public decimal Btc { get; private set; }
-		public decimal Ltc { get; private set; }
-		public decimal Nmc { get; private set; }
-		public decimal Nvc { get; private set; }
-		public decimal Trc { get; private set; }
-		public decimal Ppc { get; private set; }
-		public decimal Ftc { get; private set; }
-		public decimal Usd { get; private set; }
-		public decimal Rur { get; private set; }
-		public decimal Eur { get; private set; }
+//using Newtonsoft.Json.Linq;
+using System.Linq;
+namespace BtcE {
+	public class Funds {
+		private Dictionary<string, decimal> AllValues;
 
-		public static Funds ReadFromJObject(JObject o)
-		{
-			if (o == null)
+		public decimal GetFund( BtceCurrency cur ) {
+			return ( GetFund( cur.ToString() ) );
+		}
+
+		public decimal GetFund( string cur ) {
+			return ( AllValues[ cur.ToLowerInvariant() ] );
+		}
+		public string[] GetFundValues() {
+			return AllValues.Keys.ToArray();
+		}
+
+		public decimal Usd {
+			get { return AllValues[ "usd" ]; }
+		}
+		public decimal Btc {
+			get { return AllValues[ "btc" ]; }
+		}
+		public decimal Ltc {
+			get { return AllValues[ "ltc" ]; }
+		}
+		public decimal Nmc {
+			get { return AllValues[ "nmc" ]; }
+		}
+		public decimal Rur {
+			get { return AllValues[ "rur" ]; }
+		}
+		public decimal Ftc {
+			get { return AllValues[ "ftc" ]; }
+		}
+		public decimal Nvc {
+			get { return AllValues[ "nvc" ]; }
+		}
+		public decimal Eur {
+			get { return AllValues[ "eur" ]; }
+		}
+		public decimal Trc {
+			get { return AllValues[ "trc" ]; }
+		}
+		public decimal Ppc {
+			get { return AllValues[ "ppc" ]; }
+		}
+		public static Funds ReadFromJObject( JObject o ) {
+			if ( o == null )
 				return null;
-			return new Funds()
-			{
-				Btc = o.Value<decimal>("btc"),
-				Ltc = o.Value<decimal>("ltc"),
-				Nmc = o.Value<decimal>("ntc"),
-				Nvc = o.Value<decimal>("nvc"),
-				Trc = o.Value<decimal>("trc"),
-				Ppc = o.Value<decimal>("ppc"),
-				Ftc = o.Value<decimal>("Ftc"),
-				Usd = o.Value<decimal>("Usd"),
-				Rur = o.Value<decimal>("rur"),
-				Eur = o.Value<decimal>("eur")
+			return new Funds() {
+				AllValues = ( ( IDictionary<string, JToken> ) o ).ToDictionary( a => a.Key, a => ( decimal ) a.Value )
+
+				//Usd = o.Value<decimal>("usd"),
+				//Btc = o.Value<decimal>("btc"),
+				//Sc = o.Value<decimal>("sc"),
+				//Ltc = o.Value<decimal>("ltc"),
+				//Ruc = o.Value<decimal>("ruc"),
+				//Nmc = o.Value<decimal>("nmc"),
+				//Rur = o.Value<decimal>("rur")
 			};
 		}
 

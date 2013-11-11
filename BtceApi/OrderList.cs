@@ -31,7 +31,7 @@ namespace BtcE
 		public Dictionary<int, Order> List { get; private set; }
 		public static OrderList ReadFromJObject(JObject o) {
 			return new OrderList() {
-				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Order.ReadFromJObject(item.Value as JObject))
+				List = ((IDictionary<string, JToken>)o).ToDictionary(item => int.Parse(item.Key), item => Order.ReadFromJObject(item.Value as JObject))
 			};
 		}
 	}
