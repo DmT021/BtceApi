@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
 

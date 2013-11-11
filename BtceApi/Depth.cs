@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 namespace BtcE
 {
 	public class OrderInfo
@@ -32,7 +31,7 @@ namespace BtcE
 		}
 		public override string ToString()
 		{
-			return string.Format("Bids: {0} Asks: {1}", this.Asks.Count, this.Bids.Count);
+			return string.Format("{0} Bids:{2} & {1} Asks: {3}", this.Asks.Length, this.Bids.Length, this.Asks.Sum(x => x.Amount), this.Bids.Sum(x => x.Amount));
 		}
 	}
 }

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 namespace BtcE
 {
 	public enum BtceCurrency
 	{
-    Unknown,
+		Unknown,
 		btc,
 		eur,
 		ftc,
@@ -12,10 +12,8 @@ namespace BtcE
 		nvc,
 		trc,
 		ppc,
-		ftc,
 		usd,
-		rur,
-		eur		
+		rur
 	}
 	public class BtceCurrencyHelper
 	{

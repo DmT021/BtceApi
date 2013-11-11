@@ -4,8 +4,6 @@
  * 2012
  */
 
-using BtcE.Utils;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +13,8 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using BtcE.Utils;
+using Newtonsoft.Json.Linq;
 namespace BtcE
 {
 	public class BtceApi

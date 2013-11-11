@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace BtcE.Utils {
 	public static class UnixTime {
