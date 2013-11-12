@@ -67,6 +67,7 @@
     <Compile Include="Trade.cs" />
     <Compile Include="TradeInfo.cs" />
     <Compile Include="TradeInfoType.cs" />
+    <Compile Include="TradeInfoTypeHelper.cs" />
     <Compile Include="TradeTypeHelper.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="UserInfo.cs" />
