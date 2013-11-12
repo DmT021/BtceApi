@@ -60,6 +60,7 @@
     <Compile Include="Depth.cs" />
     <Compile Include="Funds.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="OrderInfo.cs" />
     <Compile Include="OrderList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ticker.cs" />
