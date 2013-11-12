@@ -238,11 +238,16 @@ namespace BtcE
 		{
 			return JArray.Parse(Query(string.Format("{1}api/2/{0}/trades", BtcePairHelper.ToString(pair), ExchangeHost))).OfType<JObject>().Select(TradeInfo.ReadFromJObject).ToArray();
 		}
+        /// <summary>
+        /// Returns the fee for the supplied currnecy pair
+        /// </summary>
+        /// <param name="pair">Currency pair to obtain fee for </param>
+        /// <returns>Fee amount for trading the supplied currency pair</returns>
 		public static decimal GetFee(BtcePair pair)
 		{
 			return JObject.Parse(Query(string.Format("{1}api/2/{0}/fee", BtcePairHelper.ToString(pair), ExchangeHost))).Value<decimal>("trade");
 		}
-		static string Query(string url)
+		private static string Query(string url)
 		{
 			var request = WebRequest.Create(url);
 			request.Proxy = WebRequest.DefaultWebProxy;
