@@ -19,10 +19,10 @@ namespace BtcE
 {
 	public class BtceApi : IDisposable
 	{
-		string key;
-		HMACSHA512 hashMaker;
-		UInt32 nonce;
-		readonly string instanseExchangeHost;
+		private string key;
+		private HMACSHA512 hashMaker;
+		private UInt32 nonce;
+		private readonly string instanseExchangeHost;
 		public static string ExchangeHost = "https://btc-e.com/";
 
         public BtceApi(string key, string secret) : this(key, secret, null)
@@ -39,8 +39,13 @@ namespace BtcE
 			this.instanseExchangeHost = exchangeHost ?? ExchangeHost;
 		}
 
+        /// <summary>
+        /// Get the Information about a users account, orders and funds
+        /// </summary>
+        /// <returns>A populated UserInfo object</returns>
 		public UserInfo GetInfo()
 		{
+
 			var resultStr = Query(new Dictionary<string, string>() { { "method", "getInfo" } });
 			var result = JObject.Parse(resultStr);
 			if (result.Value<int>("success") == 0)
@@ -129,7 +134,7 @@ namespace BtcE
 		}
 
         /// <summary>
-        /// Get active Buy & Sell orders
+        /// Get active Buy and Sell orders
         /// </summary>
         /// <param name="pair">Currency to botain orders for, if null all currencies are used</param>
         /// <returns>A list of both buy and sell orders for the supplied currency</returns>
