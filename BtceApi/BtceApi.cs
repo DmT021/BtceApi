@@ -24,6 +24,13 @@ namespace BtcE
 		UInt32 nonce;
 		readonly string instanseExchangeHost;
 		public static string ExchangeHost = "https://btc-e.com/";
+
+        public BtceApi(string key, string secret) : this(key, secret, null)
+        {
+            this.key = key;
+            hashMaker = new HMACSHA512(Encoding.ASCII.GetBytes(secret));
+            nonce = UnixTime.Now;
+        }
 		public BtceApi(string key, string secret, string exchangeHost = null)
 		{
 			this.key = key;
@@ -267,13 +274,6 @@ namespace BtcE
         ~BtceApi()
         {
             Dispose(false);
-        }
-
-        public BtceApi(string key, string secret)
-        {
-            this.key = key;
-            hashMaker = new HMACSHA512(Encoding.ASCII.GetBytes(secret));
-            nonce = UnixTime.Now;
         }
 	}
 }
