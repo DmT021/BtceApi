@@ -128,18 +128,24 @@ namespace BtcE
 			throw new BtceException("GetOrderList() is depricated and will no longer be supported as of Nov. 1st 2013. Please use GetActiveOrders() instead.");
 		}
 
-		public OrderList GetActiveOrders(BtcePair? pair = null)
-		{
-			var args = new Dictionary<string, string>()
+        /// <summary>
+        /// Get active Buy & Sell orders
+        /// </summary>
+        /// <param name="pair">Currency to botain orders for, if null all currencies are used</param>
+        /// <returns>A list of both buy and sell orders for the supplied currency</returns>
+        /// <exception cref="BtceException">Throws  when an eror occurs</exception>
+        public OrderList GetActiveOrders(BtcePair? pair = null)
+        {
+            var args = new Dictionary<string, string>()
 						{
 								{ "method", "ActiveOrders" }
 						};
-			if (pair != null) args.Add("pair", BtcePairHelper.ToString(pair.Value));
-			var result = JObject.Parse(Query(args));
-			if (result.Value<int>("success") == 0)
-				throw new BtceException(result.Value<string>("error"));
-			return OrderList.ReadFromJObject(result["return"] as JObject);
-		}
+            if (pair != null) args.Add("pair", BtcePairHelper.ToString(pair.Value));
+            var result = JObject.Parse(Query(args));
+            if (result.Value<int>("success") == 0)
+                throw new BtceException(result.Value<string>("error"));
+            return OrderList.ReadFromJObject(result["return"] as JObject);
+        }
 
 		public TradeAnswer Trade(BtcePair pair, TradeType type, decimal rate, decimal amount)
 		{
