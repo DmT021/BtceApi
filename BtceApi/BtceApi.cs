@@ -159,7 +159,8 @@ namespace BtcE
 			int? endId = null,
 			bool? orderAsc = null,
 			DateTime? since = null,
-			DateTime? end = null
+			DateTime? end = null,
+            BtcePair? pair = null
 			)
 		{
 			var args = new Dictionary<string, string>() { { "method", "TradeHistory" } };
@@ -171,6 +172,7 @@ namespace BtcE
 			if (orderAsc != null) args.Add("order", orderAsc.Value ? "ASC" : "DESC");
 			if (since != null) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
 			if (end != null) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
+            if (pair != null) args.Add("pair", BtcePairHelper.ToString(pair.Value));
 
 			var result = JObject.Parse(Query(args));
 			if (result.Value<int>("success") == 0)
