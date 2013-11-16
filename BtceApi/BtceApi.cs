@@ -73,7 +73,7 @@ namespace BtcE
 			if (since != null) args.Add("since", UnixTime.GetFromDateTime(since.Value).ToString());
 			if (end != null) args.Add("end", UnixTime.GetFromDateTime(end.Value).ToString());
 			var result = JObject.Parse(Query(args));
-			if (result.Value<int>("success") == 0) throw new Exception(result.Value<string>("error"));
+			if (result.Value<int>("success") == 0) throw new BtceException(result.Value<string>("error"));
 			return TransHistory.ReadFromJObject(result["return"] as JObject);
 		}
 
