@@ -12,7 +12,10 @@ namespace BtcE
 		public UInt32 TimestampCreated { get; private set; }
 		public int Status { get; private set; }
 
-		public Order() { }
+		public Order()
+		{
+		}
+
 		public Order(BtcePair pair, TradeType type, decimal amount, decimal rate, UInt32 timestamp, int status)
 		{
 			Pair = pair;

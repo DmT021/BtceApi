@@ -14,6 +14,7 @@ namespace BtcE
 		public decimal Volume { get; private set; }
 		public decimal VolumeCurrent { get; private set; }
 		public UInt32 ServerTime { get; private set; }
+
 		public static Ticker ReadFromJObject(JObject o)
 		{
 			if (o == null)

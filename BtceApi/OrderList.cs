@@ -7,6 +7,7 @@ namespace BtcE
 	public class OrderList
 	{
 		public Dictionary<int, Order> List { get; private set; }
+
 		public static OrderList ReadFromJObject(JObject o)
 		{
 			return new OrderList()

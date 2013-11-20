@@ -15,15 +15,17 @@ using System.Text;
 using System.Web;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
+
 namespace BtcE
 {
 	public class BtceApi
 	{
-		string key;
-		HMACSHA512 hashMaker;
-		UInt32 nonce;
-		readonly string instanseExchangeHost;
+		private string key;
+		private HMACSHA512 hashMaker;
+		private UInt32 nonce;
+		private readonly string instanseExchangeHost;
 		public static string ExchangeHost = "https://btc-e.com/";
+
 		public BtceApi(string key, string secret, string exchangeHost = null)
 		{
 			this.key = key;
@@ -161,7 +163,7 @@ namespace BtcE
 			return CancelOrderAnswer.ReadFromJObject(result["return"] as JObject);
 		}
 
-		string Query(Dictionary<string, string> args)
+		private string Query(Dictionary<string, string> args)
 		{
 			args.Add("nonce", GetNonce().ToString());
 
@@ -184,11 +186,13 @@ namespace BtcE
 			reqStream.Close();
 			return new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
 		}
-		static string ByteArrayToString(byte[] ba)
+
+		private static string ByteArrayToString(byte[] ba)
 		{
 			return BitConverter.ToString(ba).Replace("-", "");
 		}
-		static string BuildPostData(Dictionary<string, string> d)
+
+		private static string BuildPostData(Dictionary<string, string> d)
 		{
 			StringBuilder s = new StringBuilder();
 			foreach (var item in d)
@@ -200,31 +204,37 @@ namespace BtcE
 			return s.ToString();
 		}
 
-		UInt32 GetNonce()
+		private UInt32 GetNonce()
 		{
 			return nonce++;
 		}
-		static string DecimalToString(decimal d)
+
+		private static string DecimalToString(decimal d)
 		{
 			return d.ToString(CultureInfo.InvariantCulture);
 		}
+
 		public static Depth GetDepth(BtcePair pair)
 		{
 			return Depth.ReadFromJObject(JObject.Parse(Query(string.Format("{1}api/2/{0}/depth", BtcePairHelper.ToString(pair), ExchangeHost))));
 		}
+
 		public static Ticker GetTicker(BtcePair pair)
 		{
 			return Ticker.ReadFromJObject(JObject.Parse(Query(string.Format("{1}api/2/{0}/ticker", BtcePairHelper.ToString(pair), ExchangeHost)))["ticker"] as JObject);
 		}
+
 		public static TradeInfo[] GetTrades(BtcePair pair)
 		{
 			return JArray.Parse(Query(string.Format("{1}api/2/{0}/trades", BtcePairHelper.ToString(pair), ExchangeHost))).OfType<JObject>().Select(TradeInfo.ReadFromJObject).ToArray();
 		}
+
 		public static decimal GetFee(BtcePair pair)
 		{
 			return JObject.Parse(Query(string.Format("{1}api/2/{0}/fee", BtcePairHelper.ToString(pair), ExchangeHost))).Value<decimal>("trade");
 		}
-		static string Query(string url)
+
+		private static string Query(string url)
 		{
 			var request = WebRequest.Create(url);
 			request.Proxy = WebRequest.DefaultWebProxy;

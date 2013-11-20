@@ -6,17 +6,20 @@ namespace BtcE
 {
 	public static class BtcePairHelper
 	{
-		public static BtcePair FromString(string s) {
+		public static BtcePair FromString(string s)
+		{
 			BtcePair ret = BtcePair.Unknown;
 			Enum.TryParse<BtcePair>(s.ToLowerInvariant(), out ret);
 			return ret;
 		}
-		public static string ToString(BtcePair v) {
+
+		public static string ToString(BtcePair v)
+		{
 			return Enum.GetName(typeof(BtcePair), v).ToLowerInvariant();
 		}
 
-		private static Tuple<BtcePair, int, int>[] precisions = new Tuple<BtcePair, int, int>[] 
-		{ 
+		private static Tuple<BtcePair, int, int>[] precisions = new Tuple<BtcePair, int, int>[]
+		{
 			Tuple.Create(BtcePair.btc_usd, 2, 3),
 			Tuple.Create(BtcePair.ltc_btc, 1, 5),
 			Tuple.Create(BtcePair.ltc_usd, 1, 6),
@@ -37,7 +40,7 @@ namespace BtcE
 			var pairPrecision = precisions.SingleOrDefault(x => x.Item1 == btcPair);
 			if (pairPrecision == default(Tuple<BtcePair, int, int>))
 			{
-				return Tuple.Create(4, 8); // ex. 12.3456 USD for 0.12345678 BTC: 
+				return Tuple.Create(4, 8); // ex. 12.3456 USD for 0.12345678 BTC:
 			}
 			else
 			{

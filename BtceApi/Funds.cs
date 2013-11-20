@@ -1,56 +1,76 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-namespace BtcE {
-	public class Funds {
+
+namespace BtcE
+{
+	public class Funds
+	{
 		private Dictionary<string, decimal> AllValues;
 
-		public decimal GetFund( BtceCurrency cur ) {
-			return ( GetFund( cur.ToString() ) );
+		public decimal GetFund(BtceCurrency cur)
+		{
+			return (GetFund(cur.ToString()));
 		}
 
-		public decimal GetFund( string cur ) {
-			return ( AllValues[ cur.ToLowerInvariant() ] );
+		public decimal GetFund(string cur)
+		{
+			return (AllValues[cur.ToLowerInvariant()]);
 		}
-		public string[] GetFundValues() {
+
+		public string[] GetFundValues()
+		{
 			return AllValues.Keys.ToArray();
 		}
 
-		public decimal Usd {
-			get { return AllValues[ "usd" ]; }
+		public decimal Usd
+		{
+			get { return AllValues["usd"]; }
 		}
-		public decimal Btc {
-			get { return AllValues[ "btc" ]; }
+		public decimal Btc
+		{
+			get { return AllValues["btc"]; }
 		}
-		public decimal Ltc {
-			get { return AllValues[ "ltc" ]; }
+		public decimal Ltc
+		{
+			get { return AllValues["ltc"]; }
 		}
-		public decimal Nmc {
-			get { return AllValues[ "nmc" ]; }
+		public decimal Nmc
+		{
+			get { return AllValues["nmc"]; }
 		}
-		public decimal Rur {
-			get { return AllValues[ "rur" ]; }
+		public decimal Rur
+		{
+			get { return AllValues["rur"]; }
 		}
-		public decimal Ftc {
-			get { return AllValues[ "ftc" ]; }
+		public decimal Ftc
+		{
+			get { return AllValues["ftc"]; }
 		}
-		public decimal Nvc {
-			get { return AllValues[ "nvc" ]; }
+		public decimal Nvc
+		{
+			get { return AllValues["nvc"]; }
 		}
-		public decimal Eur {
-			get { return AllValues[ "eur" ]; }
+		public decimal Eur
+		{
+			get { return AllValues["eur"]; }
 		}
-		public decimal Trc {
-			get { return AllValues[ "trc" ]; }
+		public decimal Trc
+		{
+			get { return AllValues["trc"]; }
 		}
-		public decimal Ppc {
-			get { return AllValues[ "ppc" ]; }
+		public decimal Ppc
+		{
+			get { return AllValues["ppc"]; }
 		}
-		public static Funds ReadFromJObject( JObject o ) {
-			if ( o == null )
+
+		public static Funds ReadFromJObject(JObject o)
+		{
+			if (o == null)
 				return null;
-			return new Funds() {
-				AllValues = ( ( IDictionary<string, JToken> ) o ).ToDictionary( a => a.Key, a => ( decimal ) a.Value )
+			return new Funds()
+			{
+				AllValues = ((IDictionary<string, JToken>)o).ToDictionary(a => a.Key, a => (decimal)a.Value)
 
 				//Usd = o.Value<decimal>("usd"),
 				//Btc = o.Value<decimal>("btc"),
@@ -67,5 +87,4 @@ namespace BtcE {
 			return string.Format("btc:{0} ltc:{1} ppc:{2} nmc:{3} trc:{4}", Btc, Ltc, Ppc, Nmc, Trc);
 		}
 	}
-
 }

@@ -10,6 +10,7 @@ namespace BtcE
 			Enum.TryParse<BtceCurrency>(s, out ret);
 			return ret;
 		}
+
 		public static string ToString(BtceCurrency v)
 		{
 			return Enum.GetName(typeof(BtceCurrency), v);
@@ -20,6 +21,7 @@ namespace BtcE
 			var currencyStrs = BtcePairHelper.ToString(pair).Split('_');
 			return Tuple.Create(currencyStrs[0].ToUpperInvariant(), currencyStrs[1].ToUpperInvariant());
 		}
+
 		public static Tuple<BtceCurrency, BtceCurrency> FromBtcePair2(BtcePair pair)
 		{
 			var currencyStrs = BtceCurrencyHelper.FromBtcePair(pair);

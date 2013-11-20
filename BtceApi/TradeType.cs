@@ -7,11 +7,14 @@ namespace BtcE
 		Sell,
 		Buy
 	}
+
 	public class TradeTypeHelper
 	{
-		public static TradeType FromString(string s) {
+		public static TradeType FromString(string s)
+		{
 			s = s.ToLower();
-			switch ( s ) {
+			switch (s)
+			{
 				case "sell":
 					return TradeType.Sell;
 				case "buy":
@@ -20,7 +23,9 @@ namespace BtcE
 					throw new ArgumentException();
 			}
 		}
-		public static string ToString(TradeType v) {
+
+		public static string ToString(TradeType v)
+		{
 			return Enum.GetName(typeof(TradeType), v).ToLowerInvariant();
 		}
 	}
