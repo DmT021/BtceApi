@@ -9,6 +9,7 @@ namespace BtcE
 		btc_eur,
 		ltc_btc,
 		ltc_usd,
+        ltc_eur,
 		ltc_rur,
 		nmc_btc,
 		nvc_btc,
