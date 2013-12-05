@@ -9,6 +9,9 @@ namespace ApiTest
 	class Program
 	{
 		static void Main(string[] args) {
+            var depth3 = BtceApiV3.GetDepth(new BtcePair[] { BtcePair.btc_usd });
+            var ticker3 = BtceApiV3.GetTicker(new BtcePair[] { BtcePair.btc_usd });
+            var trades3 = BtceApiV3.GetTrades(new BtcePair[] { BtcePair.btc_usd });
 			var ticker = BtceApi.GetTicker(BtcePair.btc_usd);
 			var trades = BtceApi.GetTrades(BtcePair.btc_usd);
 			var btcusdDepth = BtceApi.GetDepth(BtcePair.usd_rur);
