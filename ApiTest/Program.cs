@@ -11,9 +11,16 @@ namespace ApiTest
 		static void Main(string[] args)
 		{
 			var ticker = BtceApi.GetTicker(BtcePair.btc_usd);
+			Console.WriteLine(ticker);
 			var trades = BtceApi.GetTrades(BtcePair.btc_usd);
+			foreach (var trade in trades)
+			{
+				Console.WriteLine(trade);
+			}
 			var btcusdDepth = BtceApi.GetDepth(BtcePair.usd_rur);
+			Console.WriteLine(btcusdDepth);
 			var fee = BtceApi.GetFee(BtcePair.usd_rur);
+			Console.WriteLine(fee);
 
 			var btceApi = new BtceApi("API_KEY", "API_SECRET");
 			var info = btceApi.GetInfo();
