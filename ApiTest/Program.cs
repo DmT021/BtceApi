@@ -24,12 +24,17 @@ namespace ApiTest
 
 			var btceApi = new BtceApi("API_KEY", "API_SECRET");
 			var info = btceApi.GetInfo();
+			Console.WriteLine(info);
 			var transHistory = btceApi.GetTransHistory();
 			var tradeHistory = btceApi.GetTradeHistory(count: 20);
+			Console.WriteLine(tradeHistory);
 			//var orderList = btceApi.GetOrderList();  ** DEPRICATED ** use GetActiveOrders() instead!
 			var orderList = btceApi.GetActiveOrders();
+			Console.WriteLine(orderList);
 			var tradeAnswer = btceApi.Trade(BtcePair.btc_usd, TradeType.Sell, 20, 0.1m);
+			Console.WriteLine(tradeAnswer);
 			var cancelAnswer = btceApi.CancelOrder(tradeAnswer.OrderId);
+			Console.WriteLine(cancelAnswer);
 		}
 	}
 }

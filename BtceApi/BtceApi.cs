@@ -115,6 +115,7 @@ namespace BtcE
 		/// <returns>A populated UserInfo object</returns>
 		public UserInfo GetInfo()
 		{
+
 			var resultStr = Query(new Dictionary<string, string>() { { "method", "getInfo" } });
 			var result = JObject.Parse(resultStr);
 			if (result.Value<int>("success") == 0)
@@ -227,7 +228,7 @@ namespace BtcE
 		{
 			// make thread safe
 			lock (disposeLock)
-			{
+						{
 				// conform to reference example: http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx
 				if (!disposed)
 				{
@@ -241,8 +242,8 @@ namespace BtcE
 							hashMaker = null; // null just to br safe
 						}
 					}
-				}
-			}
+		}
+		}
 		}
 
 		private static string BuildPostData(Dictionary<string, string> d)
@@ -277,12 +278,12 @@ namespace BtcE
 		}
 
 		private UInt32 GetNonce()
-		{
+        {
 			return nonce++;
-		}
+        }
 
 		private string Query(Dictionary<string, string> args)
-		{
+        {
 			args.Add("nonce", GetNonce().ToString());
 
 			var dataStr = BuildPostData(args);
