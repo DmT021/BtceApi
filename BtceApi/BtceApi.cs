@@ -49,6 +49,11 @@ namespace BtcE
 			return Depth.ReadFromJObject(JObject.Parse(Query(string.Format("{1}api/2/{0}/depth", BtcePairHelper.ToString(pair), ExchangeHost))));
 		}
 
+		/// <summary>
+		/// Returns the fee for the supplied currnecy pair
+		/// </summary>
+		/// <param name="pair">Currency pair to obtain fee for </param>
+		/// <returns>Fee amount for trading the supplied currency pair</returns>
 		public static decimal GetFee(BtcePair pair)
 		{
 			return JObject.Parse(Query(string.Format("{1}api/2/{0}/fee", BtcePairHelper.ToString(pair), ExchangeHost))).Value<decimal>("trade");
@@ -85,6 +90,12 @@ namespace BtcE
 			GC.SuppressFinalize(this);
 		}
 
+		/// <summary>
+		/// Get active Buy & Sell orders
+		/// </summary>
+		/// <param name="pair">Currency to botain orders for, if null all currencies are used</param>
+		/// <returns>A list of both buy and sell orders for the supplied currency</returns>
+		/// <exception cref="BtceException">Throws  when an eror occurs</exception>
 		public OrderList GetActiveOrders(BtcePair? pair = null)
 		{
 			var args = new Dictionary<string, string>()
@@ -98,6 +109,10 @@ namespace BtcE
 			return OrderList.ReadFromJObject(result["return"] as JObject);
 		}
 
+		/// <summary>
+		/// Get the Information about a users account, orders and funds
+		/// </summary>
+		/// <returns>A populated UserInfo object</returns>
 		public UserInfo GetInfo()
 		{
 			var resultStr = Query(new Dictionary<string, string>() { { "method", "getInfo" } });
