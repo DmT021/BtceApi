@@ -27,6 +27,7 @@ namespace BtcE
 		private HMACSHA512 hashMaker;
 		private string key;
 		private UInt32 nonce;
+
 		public BtceApi(string key, string secret, string exchangeHost = null)
 		{
 			this.key = key;

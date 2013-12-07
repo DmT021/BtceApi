@@ -60,11 +60,16 @@
     <Compile Include="Depth.cs" />
     <Compile Include="Funds.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="OrderInfo.cs" />
     <Compile Include="OrderList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ticker.cs" />
+    <Compile Include="Trade.cs" />
     <Compile Include="TradeInfo.cs" />
     <Compile Include="TradeInfoType.cs" />
+    <Compile Include="TradeInfoTypeHelper.cs" />
+    <Compile Include="TradeTypeHelper.cs" />
+    <Compile Include="Transaction.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="Rights.cs" />
     <Compile Include="TradeAnswer.cs" />
