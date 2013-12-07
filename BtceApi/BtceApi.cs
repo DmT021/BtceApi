@@ -18,7 +18,7 @@ using Newtonsoft.Json.Linq;
 
 namespace BtcE
 {
-	public class BtceApi
+	public class BtceApi : IDisposable
 	{
 		private string key;
 		private HMACSHA512 hashMaker;
@@ -242,5 +242,48 @@ namespace BtcE
 			if (request == null) throw new Exception("Non HTTP WebRequest");
 			return new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
 		}
+
+
+        /// <summary>
+        /// Clean up
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // null check
+                if (hashMaker != null)
+                {
+                    // invoke disposing
+                    hashMaker.Dispose();
+                    hashMaker = null; // null just to br safe
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clean up
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Clean up
+        /// </summary>
+        ~BtceApi()
+        {
+            Dispose(false);
+        }
+
+        public BtceApi(string key, string secret)
+        {
+            this.key = key;
+            hashMaker = new HMACSHA512(Encoding.ASCII.GetBytes(secret));
+            nonce = UnixTime.Now;
+        }
 	}
 }
