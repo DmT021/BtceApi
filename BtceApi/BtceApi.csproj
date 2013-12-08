@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BtceApi.cs" />
+    <Compile Include="BtceApiV3.cs" />
     <Compile Include="BtceCurrency.cs" />
     <Compile Include="BtceCurrencyHelper.cs" />
     <Compile Include="BtceException.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="TradeInfo.cs" />
     <Compile Include="TradeInfoType.cs" />
     <Compile Include="TradeInfoTypeHelper.cs" />
+    <Compile Include="TradeInfoV3.cs" />
     <Compile Include="TradeTypeHelper.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="UserInfo.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="TradeType.cs" />
     <Compile Include="TransHistory.cs" />
     <Compile Include="UnixTime.cs" />
+    <Compile Include="WebApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

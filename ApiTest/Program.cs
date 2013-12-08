@@ -10,8 +10,24 @@ namespace ApiTest
 	{
 		static void Main(string[] args)
 		{
-			var ticker = BtceApi.GetTicker(BtcePair.btc_usd);
-			Console.WriteLine(ticker);
+			var depths3 = BtceApiV3.GetDepth(new BtcePair[] { BtcePair.btc_usd });
+			foreach (var depth3 in depths3)
+			{
+				Console.WriteLine("{0}: {1}",depth3.Key, depth3.Value);
+			}
+			var tickers3 = BtceApiV3.GetTicker(new BtcePair[] { BtcePair.btc_usd });
+			foreach (var ticker3 in tickers3)
+			{
+				Console.WriteLine("{0}: {1}", ticker3.Key, ticker3.Value);
+			}	
+			var trades3 = BtceApiV3.GetTrades(new BtcePair[] { BtcePair.btc_usd });
+			foreach (var trade3 in trades3)
+			{
+				Console.WriteLine(trade3);
+			}
+
+			var ticker = BtceApi.GetTicker(BtcePair.btc_usd); 
+			Console.WriteLine(ticker);			
 			var trades = BtceApi.GetTrades(BtcePair.btc_usd);
 			foreach (var trade in trades)
 			{
