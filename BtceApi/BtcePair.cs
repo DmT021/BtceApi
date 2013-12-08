@@ -1,34 +1,27 @@
-﻿using System;
-
 namespace BtcE
 {
-	public enum BtcePair
-	{
-		btc_usd,
-		btc_rur,
-		btc_eur,
-		ltc_btc,
-		ltc_usd,
-		ltc_rur,
-		nmc_btc,
-		nvc_btc,
-		usd_rur,
-		eur_usd,
-		trc_btc,
-		ppc_btc,
-		ftc_btc,
-        Unknown
-	}
-
-	public class BtcePairHelper
-	{
-		public static BtcePair FromString(string s) {
-			BtcePair ret = BtcePair.Unknown;
-			Enum.TryParse<BtcePair>(s.ToLowerInvariant(), out ret);
-			return ret;
-		}
-		public static string ToString(BtcePair v) {
-			return Enum.GetName(typeof(BtcePair), v).ToLowerInvariant();
-		}
-	}
+  /// <summary>
+  /// BTC-e currency pairs, sorted alphabetically except Unknown as 1st since it is always present and will not change
+  /// </summary>
+  public enum BtcePair
+  {
+    Unknown,
+    btc_usd,
+    btc_eur,
+    btc_rur,
+    eur_usd,
+    ftc_btc,
+    ltc_btc,
+    ltc_eur,
+    ltc_rur,
+    ltc_usd,
+    nmc_btc,
+    nmc_usd,
+    nvc_btc,
+    nvc_usd,
+    ppc_btc,
+    trc_btc,
+    usd_rur,
+    xpm_btc,
+  }
 }
