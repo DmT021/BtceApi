@@ -10,8 +10,8 @@ namespace BtcE
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
-	using Newtonsoft.Json.Linq;
 	using System.Web;
+	using Newtonsoft.Json.Linq;
 
 	/// <summary>
 	/// TODO: Update summary.
@@ -85,8 +85,5 @@ namespace BtcE
 			Func<JContainer, List<TradeInfoV3>> tradeInfoListReader = (x => x.OfType<JObject>().Select(TradeInfoV3.ReadFromJObject).ToList());
 			return MakeRequest<List<TradeInfoV3>>("trades", pairlist, tradeInfoListReader, new Dictionary<string, string>() { { "limit", limit.ToString() } }, true);
 		}
-
-
 	}
-
 }

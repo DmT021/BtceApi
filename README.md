@@ -16,20 +16,23 @@ Synchronous:
 Example - V3 API, Non-Authenticated Methods
 
 ```c#
-var depths3 = BtceApiV3.GetDepth(new BtcePair[] { BtcePair.btc_usd });
-foreach (var depth3 in depths3)
+var pairDepths3 = BtceApiV3.GetDepth(new BtcePair[] { BtcePair.btc_usd });
+foreach (var depth3 in pairDepths3)
 {
-	Console.WriteLine("{0}: {1}",depth3.Key, depth3.Value);
+	Console.WriteLine("{0}: {1}", depth3.Key, depth3.Value);
 }
-var tickers3 = BtceApiV3.GetTicker(new BtcePair[] { BtcePair.btc_usd });
-foreach (var ticker3 in tickers3)
+var pairTickers3 = BtceApiV3.GetTicker(new BtcePair[] { BtcePair.btc_usd });
+foreach (var ticker3 in pairTickers3)
 {
 	Console.WriteLine("{0}: {1}", ticker3.Key, ticker3.Value);
-}	
-var trades3 = BtceApiV3.GetTrades(new BtcePair[] { BtcePair.btc_usd });
-foreach (var trade3 in trades3)
+}
+var pairTrades3 = BtceApiV3.GetTrades(new BtcePair[] { BtcePair.btc_usd });
+foreach (var pairTrade3 in pairTrades3)
 {
-	Console.WriteLine(trade3);
+	foreach (var trade3 in pairTrade3.Value)
+	{
+		Console.WriteLine(trade3);
+	}
 }
 ```
 

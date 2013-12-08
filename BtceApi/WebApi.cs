@@ -7,16 +7,13 @@
 namespace BtcE
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using System.Net;
 	using System.IO;
+	using System.Net;
 
 	/// <summary>
 	/// TODO: Update summary.
 	/// </summary>
-	class WebApi
+	internal class WebApi
 	{
 		public static string Query(string url)
 		{

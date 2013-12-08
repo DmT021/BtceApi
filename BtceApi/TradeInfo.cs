@@ -16,22 +16,22 @@ namespace BtcE
 		public BtcePair CurrencyPair { get; private set; }
 
 		public static TradeInfo ReadFromJObject(JObject o)
-        {
-            if (o == null)
-                return null;
+		{
+			if (o == null)
+				return null;
 
 			return new TradeInfo()
-            {
-                Amount = o.Value<decimal>("amount"),
-                Price = o.Value<decimal>("price"),
-                Date = UnixTime.ConvertToDateTime(o.Value<UInt32>("date")),
-                Item = BtceCurrencyHelper.FromString(o.Value<string>("item")),
-                PriceCurrency = BtceCurrencyHelper.FromString(o.Value<string>("price_currency")),
-                Tid = o.Value<UInt32>("tid"),
-				Type = TradeInfoTypeHelper.FromString(o.Value<string>("trade_type")),
-				CurrencyPair = BtcePairHelper.FromString(o.Value<string>("item") + "_" + o.Value<string>("price_currency"))
-            };
-        }
+						{
+							Amount = o.Value<decimal>("amount"),
+							Price = o.Value<decimal>("price"),
+							Date = UnixTime.ConvertToDateTime(o.Value<UInt32>("date")),
+							Item = BtceCurrencyHelper.FromString(o.Value<string>("item")),
+							PriceCurrency = BtceCurrencyHelper.FromString(o.Value<string>("price_currency")),
+							Tid = o.Value<UInt32>("tid"),
+							Type = TradeInfoTypeHelper.FromString(o.Value<string>("trade_type")),
+							CurrencyPair = BtcePairHelper.FromString(o.Value<string>("item") + "_" + o.Value<string>("price_currency"))
+						};
+		}
 
 		public override string ToString()
 		{
