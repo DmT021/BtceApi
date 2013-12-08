@@ -3,7 +3,7 @@ C# API for btc-e.com
 
 Authors
 ------------
-  
+	
 - Galimzyanov Dmitry - Russia, Ekaterinburg city - https://github.com/DmT021/BtceApi Donate: 131W3PYbiydd7K8XhYo7YqPodUPVhztFMi
 - Gnosis SuperFund - Australia, Adelaide - https://github.com/GnosisSuperFund/BtceApi
 - n074v41l4bl34u - Poland, Warsaw - https://github.com/n074v41l4bl34u/BtceApi
