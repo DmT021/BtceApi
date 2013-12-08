@@ -1,8 +1,8 @@
 namespace BtcE
 {
-	public enum TradeInfoType
-	{
-		Ask,
-		Bid
-	}
+  public enum TradeInfoType
+  {
+    Ask,
+    Bid
+  }
 }

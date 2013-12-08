@@ -1,8 +1,8 @@
 namespace BtcE
 {
-	public enum TradeType
-	{
-		Sell,
-		Buy
-	}
+  public enum TradeType
+  {
+    Sell,
+    Buy
+  }
 }
