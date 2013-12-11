@@ -1,26 +1,29 @@
+using System;
+
 namespace BtcE.Utils
 {
-  using System;
-
-  public static class UnixTime
-  {
-    private static DateTime unixEpoch;
-
-    static UnixTime()
+    public static class UnixTime
     {
-      unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-    }
+        private static DateTime unixEpoch;
 
-    public static uint Now { get { return GetFromDateTime(DateTime.UtcNow); } }
+        static UnixTime()
+        {
+            unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        }
 
-    public static DateTime ConvertToDateTime(uint unixtime)
-    {
-      return unixEpoch.AddSeconds(unixtime);
-    }
+        public static uint Now
+        {
+            get { return GetFromDateTime(DateTime.UtcNow); }
+        }
 
-    public static uint GetFromDateTime(DateTime d)
-    {
-      return (uint)(d - unixEpoch).TotalSeconds;
+        public static DateTime ConvertToDateTime(uint unixtime)
+        {
+            return unixEpoch.AddSeconds(unixtime);
+        }
+
+        public static uint GetFromDateTime(DateTime d)
+        {
+            return (uint) (d - unixEpoch).TotalSeconds;
+        }
     }
-  }
 }
