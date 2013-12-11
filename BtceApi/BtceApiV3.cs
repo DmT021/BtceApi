@@ -29,10 +29,10 @@ namespace BtcE
             return MakeRequest("ticker", pairlist, x => Ticker.ReadFromJObject(x as JObject), null, true);
         }
 
-        public static Dictionary<BtcePair, List<TradeInfoV3>> GetTrades(BtcePair[] pairlist, int limit = 150)
+        public static Dictionary<BtcePair, List<TradeInfo>> GetTrades(BtcePair[] pairlist, int limit = 150)
         {
-            Func<JContainer, List<TradeInfoV3>> tradeInfoListReader =
-                (x => x.OfType<JObject>().Select(TradeInfoV3.ReadFromJObject).ToList());
+            Func<JContainer, List<TradeInfo>> tradeInfoListReader =
+                (x => x.OfType<JObject>().Select(TradeInfo.ReadFromJObjectV3).ToList());
             return MakeRequest("trades", pairlist, tradeInfoListReader,
                                new Dictionary<string, string> {{"limit", limit.ToString()}}, true);
         }

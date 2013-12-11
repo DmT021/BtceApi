@@ -7,14 +7,24 @@ namespace BtcE
     public class TradeInfo
     {
         public decimal Amount { get; private set; }
-        public BtcePair CurrencyPair { get; private set; }
-        public DateTime Date { get; private set; }
-        public BtceCurrency Item { get; private set; }
         public decimal Price { get; private set; }
-        public BtceCurrency PriceCurrency { get; private set; }
         public uint Tid { get; private set; }
         public TradeInfoType Type { get; private set; }
+        public DateTime Timestamp { get; private set; }
 
+        [Obsolete("Not used anymore", false)]
+        public BtcePair CurrencyPair { get; private set; }
+
+        [Obsolete("Not used anymore", false)]
+        public DateTime Date { get; private set; }
+
+        [Obsolete("Not used anymore", false)]
+        public BtceCurrency Item { get; private set; }
+
+        [Obsolete("Not used anymore", false)]
+        public BtceCurrency PriceCurrency { get; private set; }
+
+        [Obsolete("Not used anymore", false)]
         public static TradeInfo ReadFromJObject(JObject o)
         {
             if (o == null)
@@ -34,13 +44,26 @@ namespace BtcE
                 };
         }
 
+        public static TradeInfo ReadFromJObjectV3(JObject o)
+        {
+            if (o == null)
+                return null;
+
+            return new TradeInfo
+                {
+                    Amount = o.Value<decimal>("amount"),
+                    Price = o.Value<decimal>("price"),
+                    Timestamp = UnixTime.ConvertToDateTime(o.Value<uint>("timestamp")),
+                    Tid = o.Value<uint>("tid"),
+                    Type = TradeInfoTypeHelper.FromString(o.Value<string>("type"))
+                };
+        }
+
         public override string ToString()
         {
             return string.Format(
-                "{0}/{1} {2} [{3}] {4}x{5} id:{6}",
-                Item,
-                PriceCurrency,
-                Date.ToLongTimeString(),
+                "{0} [{1}] {2}x{3} id:{4}",
+                Timestamp,
                 Type,
                 Price,
                 Amount,

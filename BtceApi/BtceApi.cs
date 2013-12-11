@@ -81,12 +81,16 @@ namespace BtcE
                             "ticker"] as JObject);
         }
 
+#pragma warning disable 612,618
         public static TradeInfo[] GetTrades(BtcePair pair)
+#pragma warning restore 612,618
         {
             return
                 JArray.Parse(Query(string.Format("{1}api/2/{0}/trades", BtcePairHelper.ToString(pair), ExchangeHost)))
                       .OfType<JObject>()
+#pragma warning disable 612,618
                       .Select(TradeInfo.ReadFromJObject)
+#pragma warning restore 612,618
                       .ToArray();
         }
 
