@@ -9,9 +9,9 @@ namespace BtcE
         }
 
         public Order(BtcePair pair, TradeType type, decimal amount, decimal rate, uint timestamp, int status)
-            : this()
         {
             Pair = pair;
+            Type = type;
             Amount = amount;
             Rate = rate;
             TimestampCreated = timestamp;
