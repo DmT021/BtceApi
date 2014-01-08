@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
+using BtcE.Utils;
 
 namespace BtcE
 {
@@ -13,7 +14,7 @@ namespace BtcE
 		public decimal Sell { get; private set; }
 		public decimal Volume { get; private set; }
 		public decimal VolumeCurrent { get; private set; }
-		public UInt32 ServerTime { get; private set; }
+		public DateTime ServerTime { get; private set; }
 		public static Ticker ReadFromJObject(JObject o) {
 			if ( o == null )
 				return null;
@@ -26,7 +27,7 @@ namespace BtcE
 				Sell = o.Value<decimal>("sell"),
 				Volume = o.Value<decimal>("vol"),
 				VolumeCurrent = o.Value<decimal>("vol_cur"),
-				ServerTime = o.Value<UInt32>("server_time"),
+				ServerTime = UnixTime.ConvertToDateTime(o.Value<UInt32>("server_time")),
 			};
 		}
 	}
