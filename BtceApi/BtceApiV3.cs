@@ -88,7 +88,12 @@ namespace BtcE
         {
             var newargs = new Dictionary<string, string> {{"ignore_invalid", "1"}};
             if (args != null)
-                newargs.Concat(args);
+            {
+                foreach (KeyValuePair<string, string> kvp in args)
+                {
+                    newargs.Add(kvp.Key, kvp.Value);
+                }
+            }
             return Query(method, pairlist, newargs);
         }
 
