@@ -26,8 +26,8 @@ namespace BtcE
                 Nvc = o.Value<decimal>("nvc"),
                 Trc = o.Value<decimal>("trc"),
                 Ppc = o.Value<decimal>("ppc"),
-                Ftc = o.Value<decimal>("Ftc"),
-                Usd = o.Value<decimal>("Usd"),
+                Ftc = o.Value<decimal>("ftc"),
+                Usd = o.Value<decimal>("usd"),
                 Rur = o.Value<decimal>("rur"),
                 Eur = o.Value<decimal>("eur")
 			};
