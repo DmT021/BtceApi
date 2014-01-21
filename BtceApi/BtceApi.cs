@@ -26,7 +26,7 @@ namespace BtcE
         private readonly string key;
         private bool disposed;
         private HMACSHA512 hashMaker;
-        private uint nonce;
+        private long nonce;
 
         public BtceApi(string key, string secret, string exchangeHost = null)
         {
@@ -368,9 +368,9 @@ namespace BtcE
             return new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
         }
 
-        private uint GetNonce()
+        private long GetNonce()
         {
-            return nonce++;
+            return Interlocked.Increment(ref nonce);
         }
 
         private string Query(Dictionary<string, string> args)
