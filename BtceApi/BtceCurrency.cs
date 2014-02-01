@@ -13,6 +13,7 @@ namespace BtcE
 		usd,
 		rur,
 		eur,
+        xpm,
 		Unknown
 	}
 	class BtceCurrencyHelper

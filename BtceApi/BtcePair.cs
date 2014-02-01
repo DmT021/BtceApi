@@ -16,7 +16,11 @@ namespace BtcE
 		eur_usd,
 		trc_btc,
 		ppc_btc,
-		ftc_btc,
+        ftc_btc,
+        xpm_btc,
+        nmc_usd,
+        nvc_usd,
+        ppc_usd,
         Unknown
 	}
 
