@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Web;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
