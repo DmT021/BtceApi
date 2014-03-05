@@ -31,13 +31,21 @@ namespace BtcE
         }
     }
 
-    public class TransHistory {
+    public class TransHistory
+    {
         public Dictionary<int, Transaction> List { get; private set; }
         public static TransHistory ReadFromJObject(JObject o)
         {
-			return new TransHistory() {
-				List = o.OfType<KeyValuePair<string,JToken>>().ToDictionary(a=>int.Parse(a.Key), a=>Transaction.ReadFromJObject(a.Value as JObject))
-			};
+            var r = new TransHistory();
+            r.List = new Dictionary<int, Transaction>();
+            foreach (var item in o)
+            {
+                var transId = int.Parse(item.Key);
+                var trans = Transaction.ReadFromJObject(item.Value as JObject);
+                r.List.Add(transId, trans);
+            }
+
+            return r;
         }
     }
 }
