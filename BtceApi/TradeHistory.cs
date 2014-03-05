@@ -28,13 +28,22 @@ namespace BtcE
 			};
 		}
 	}
+	
 	public class TradeHistory
 	{
 		public Dictionary<int, Trade> List { get; private set; }
-		public static TradeHistory ReadFromJObject(JObject o) {
-			return new TradeHistory() {
-				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Trade.ReadFromJObject(item.Value as JObject))
-			};
+		
+		public static TradeHistory ReadFromJObject(JObject o)
+		{
+			var r = new TradeHistory();
+			r.List = new Dictionary<int, Trade>();
+			foreach (var item in o)
+			{
+				var tradeId = int.Parse(item.Key);
+				var trade = Trade.ReadFromJObject(item.Value as JObject);
+				r.List.Add(tradeId, trade);
+			}
+			return r;
 		}
 	}
 }
