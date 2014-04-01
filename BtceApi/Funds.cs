@@ -58,6 +58,11 @@ namespace BtcE
       get { return AllValues["usd"]; }
     }
 
+    public decimal Xpm
+    {
+      get { return AllValues["xpm"]; }
+    }
+
     public static Funds ReadFromJObject(JObject o)
     {
       if (o == null)
@@ -83,9 +88,9 @@ namespace BtcE
       return AllValues.Keys.ToArray();
     }
 
-    public override string ToString()
-    {
-      return string.Format("btc:{0} ltc:{1} ppc:{2} nmc:{3} trc:{4}", Btc, Ltc, Ppc, Nmc, Trc);
-    }
+    //public override string ToString()
+    //{
+    //  return new(){ Btc, Ltc, Ppc, Nmc, Trc}.ToString();
+    //}
   }
 }
