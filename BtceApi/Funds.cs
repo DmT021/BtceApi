@@ -1,9 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+
 namespace BtcE
 {
-  using System.Collections.Generic;
-  using System.Linq;
-  using Newtonsoft.Json.Linq;
-
   public class Funds
   {
     private Dictionary<string, decimal> AllValues;
@@ -67,7 +67,7 @@ namespace BtcE
     {
       if (o == null)
         return null;
-      return new Funds()
+      return new Funds
       {
         AllValues = ((IDictionary<string, JToken>)o).ToDictionary(a => a.Key, a => (decimal)a.Value)
       };
@@ -88,9 +88,9 @@ namespace BtcE
       return AllValues.Keys.ToArray();
     }
 
-    //public override string ToString()
-    //{
-    //  return new(){ Btc, Ltc, Ppc, Nmc, Trc}.ToString();
-    //}
+    public override string ToString()
+    {
+      return new{ Btc, Eur, Rur, Usd, Ltc, Ppc, Nmc, Nvc, Trc, Xpm, Ftc }.ToString();
+    }
   }
 }

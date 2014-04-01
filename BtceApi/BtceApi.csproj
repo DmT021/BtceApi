@@ -32,8 +32,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|X64'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -51,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BtceApi.cs" />
+    <Compile Include="BtceApiClientV3.cs" />
+    <Compile Include="BtceApiPublicClientV3.cs" />
     <Compile Include="BtceApiV3.cs" />
     <Compile Include="BtceCurrency.cs" />
     <Compile Include="BtceCurrencyHelper.cs" />
@@ -58,8 +78,12 @@
     <Compile Include="BtcePair.cs" />
     <Compile Include="BtcePairHelper.cs" />
     <Compile Include="CancelOrderAnswer.cs" />
+    <Compile Include="ClientFactory.cs" />
     <Compile Include="Depth.cs" />
     <Compile Include="Funds.cs" />
+    <Compile Include="IBtceApiClient.cs" />
+    <Compile Include="IBtceApiPublicClient.cs" />
+    <Compile Include="IClientFactory.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderInfo.cs" />
     <Compile Include="OrderList.cs" />
@@ -69,7 +93,6 @@
     <Compile Include="TradeInfo.cs" />
     <Compile Include="TradeInfoType.cs" />
     <Compile Include="TradeInfoTypeHelper.cs" />
-    <Compile Include="TradeInfoV3.cs" />
     <Compile Include="TradeTypeHelper.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="UserInfo.cs" />
