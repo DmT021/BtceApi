@@ -153,8 +153,9 @@ namespace BtcE
         /// <returns>Since the method is no longer supported it always throws BtceException</returns>
         /// <exception cref="BtceException">GetOrderList() is depricated and will no longer be supported as of Nov. 1st 2013. Please use GetActiveOrders() instead."</exception>
         [Obsolete(
-            "GetOrderList() is depricated and will no longer be supported as of Nov. 1st 2013. Please use GetActiveOrders() instead."
-            )]
+            "GetOrderList() is depricated and will no longer be supported as of Nov. 1st 2013. Please use GetActiveOrders() instead. The method throws an exception.",
+            true
+          )]
         public OrderList GetOrderList(
             int? from = null,
             int? count = null,

@@ -2,7 +2,7 @@
 
 namespace BtcE
 {
-    public class BtceApiClientV3 : BtceApiPublicClientV3, IBtceApiClient
+    public class BtceApiClientV3 : BtceApiPublicClientV3, IBtceApiClient, IDisposable
     {
         private readonly object _disposeLock = new object();
         private BtceApi _apiv2;
