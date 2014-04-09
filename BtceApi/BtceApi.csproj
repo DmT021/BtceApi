@@ -68,12 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiInfo.cs" />
     <Compile Include="BtceApi.cs" />
     <Compile Include="BtceApiClientV3.cs" />
     <Compile Include="BtceApiPublicClientV3.cs" />
     <Compile Include="BtceApiV3.cs" />
     <Compile Include="BtceCurrency.cs" />
     <Compile Include="BtceCurrencyHelper.cs" />
+    <Compile Include="BtcePairInfo.cs" />
     <Compile Include="BtceException.cs" />
     <Compile Include="BtcePair.cs" />
     <Compile Include="BtcePairHelper.cs" />

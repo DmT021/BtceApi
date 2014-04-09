@@ -15,6 +15,12 @@ namespace ApiTest
       IClientFactory factory = new ClientFactory();
       IBtceApiPublicClient publicClient = factory.CreatePublicClient();
 
+      ApiInfo apiInfo = publicClient.GetInfo();
+      foreach (var info3 in apiInfo.Pairs)
+      {
+        Console.WriteLine("{0}: {1}", info3.Key, info3.Value);
+      }
+
       IDictionary<BtcePair, Depth> pairDepths3 = publicClient.GetDepth(new[] { BtcePair.btc_usd });
       foreach (var depth3 in pairDepths3)
       {
