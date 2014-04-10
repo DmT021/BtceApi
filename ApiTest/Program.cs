@@ -15,7 +15,7 @@ namespace ApiTest
       IClientFactory factory = new ClientFactory();
       IBtceApiPublicClient publicClient = factory.CreatePublicClient();
 
-      ApiInfo apiInfo = publicClient.GetInfo();
+      ApiInfo apiInfo = publicClient.GetApiInfo();
       foreach (var info3 in apiInfo.Pairs)
       {
         Console.WriteLine("{0}: {1}", info3.Key, info3.Value);
@@ -33,7 +33,7 @@ namespace ApiTest
         Console.WriteLine("{0}: {1}", ticker3.Key, ticker3.Value);
       }
 
-      IDictionary<BtcePair, IEnumerable<TradeInfo>> pairTrades3 = publicClient.GetTrades(new[] { BtcePair.btc_usd });
+      IDictionary<BtcePair, TradeInfo[]> pairTrades3 = publicClient.GetTrades(new[] { BtcePair.btc_usd });
       foreach (var pairTrade3 in pairTrades3)
       {
         Console.WriteLine("{0}:", pairTrade3.Key);

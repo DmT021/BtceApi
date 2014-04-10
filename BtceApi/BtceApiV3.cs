@@ -29,12 +29,21 @@ namespace BtcE
       return MakeRequest("ticker", pairlist, x => Ticker.ReadFromJObject(x as JObject), null, true);
     }
 
-    public static Dictionary<BtcePair, List<TradeInfo>> GetTrades(BtcePair[] pairlist, int limit = 150)
+    public static Dictionary<BtcePair, TradeInfo[]> GetTrades(BtcePair[] pairlist, int limit = 150)
     {
-      Func<JContainer, List<TradeInfo>> tradeInfoListReader =
-          (x => x.OfType<JObject>().Select(TradeInfo.ReadFromJObjectV3).ToList());
+      Func<JContainer, TradeInfo[]> tradeInfoListReader =
+          (x => x.OfType<JObject>().Select(TradeInfo.ReadFromJObjectV3).ToArray());
       return MakeRequest("trades", pairlist, tradeInfoListReader,
                          new Dictionary<string, string> { { "limit", limit.ToString() } }, true);
+    }
+
+    internal static ApiInfo GetApiInfo()
+    {
+      var queryResult = Query("info", null);
+      var responseObj = JObject.Parse(queryResult);
+      var apiInfo = ApiInfo.ReadFromJObject(responseObj);
+
+      return apiInfo;
     }
 
     private static string MakePairListString(BtcePair[] pairlist)
@@ -108,15 +117,6 @@ namespace BtcE
                x =>
                new KeyValuePair<BtcePair, T>(BtcePairHelper.FromString(x.Name), valueReader(x.Value as JContainer)))
            .ToDictionary(x => x.Key, x => x.Value);
-    }
-
-    internal static ApiInfo GetInfo()
-    {
-      var queryResult = Query("info", null);
-      var responseObj = JObject.Parse(queryResult);
-      var apiInfo = ApiInfo.ReadFromJObject(responseObj);
-
-      return apiInfo;
     }
   }
 }

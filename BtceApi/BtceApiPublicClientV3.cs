@@ -5,9 +5,9 @@ namespace BtcE
 {
   public class BtceApiPublicClientV3 : IBtceApiPublicClient
   {
-    public ApiInfo GetInfo()
+    public ApiInfo GetApiInfo()
     {
-      return BtceApiV3.GetInfo();
+      return BtceApiV3.GetApiInfo();
     }
 
     public IDictionary<BtcePair, Depth> GetDepth(IEnumerable<BtcePair> pairlist, int limit = 150)
@@ -30,17 +30,17 @@ namespace BtcE
       return GetDepth(new[] { pair }).FirstOrDefault().Value;
     }
 
-    public IDictionary<BtcePair, List<TradeInfo>> GetTrades(IEnumerable<BtcePair> pairlist, int limit = 150)
+    public IDictionary<BtcePair, TradeInfo[]> GetTrades(IEnumerable<BtcePair> pairlist, int limit = 150)
     {
       return BtceApiV3.GetTrades(pairlist.ToArray(), limit).ToDictionary(k => k.Key, v => v.Value);
     }
 
     public decimal GetFee(BtcePair pair)
     {
-      return GetInfo().Pairs[pair].Fee;
+      return GetApiInfo().Pairs[pair].Fee;
     }
 
-    public IEnumerable<TradeInfo> GetTrades(BtcePair pair)
+    public TradeInfo[] GetTrades(BtcePair pair)
     {
       return BtceApiV3.GetTrades(new BtcePair[] { pair }).FirstOrDefault().Value;
     }
