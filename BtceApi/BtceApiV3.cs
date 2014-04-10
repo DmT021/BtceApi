@@ -37,7 +37,7 @@ namespace BtcE
                          new Dictionary<string, string> { { "limit", limit.ToString() } }, true);
     }
 
-    internal static ApiInfo GetApiInfo()
+    public static ApiInfo GetApiInfo()
     {
       var queryResult = Query("info", null);
       var responseObj = JObject.Parse(queryResult);

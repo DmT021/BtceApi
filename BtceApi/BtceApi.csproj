@@ -82,6 +82,7 @@
     <Compile Include="CancelOrderAnswer.cs" />
     <Compile Include="ClientFactory.cs" />
     <Compile Include="Depth.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Funds.cs" />
     <Compile Include="IBtceApiClient.cs" />
     <Compile Include="IBtceApiPublicClient.cs" />
