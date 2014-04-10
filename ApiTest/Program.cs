@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BtcE;
+using BtcE.Data;
 
 namespace ApiTest
 {

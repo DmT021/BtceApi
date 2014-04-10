@@ -2,6 +2,7 @@
 using System.Linq;
 using System;
 using BtcE.Extensions;
+using BtcE.Data;
 
 namespace BtcE
 {

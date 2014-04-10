@@ -1,4 +1,5 @@
 ﻿using System;
+using BtcE.Data;
 
 namespace BtcE
 {

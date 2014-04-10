@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Newtonsoft.Json.Linq;
+using BtcE.Data;
 
 namespace BtcE
 {

@@ -16,6 +16,7 @@ using System.Threading;
 using System.Web;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
+using BtcE.Data;
 
 namespace BtcE
 {

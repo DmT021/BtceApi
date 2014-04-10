@@ -4,9 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace BtcE
+using Newtonsoft.Json.Linq;
+
+namespace BtcE.Data
 {
-  using Newtonsoft.Json.Linq;
 
   /// <summary>
   /// TODO: Update summary.

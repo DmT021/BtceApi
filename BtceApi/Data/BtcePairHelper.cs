@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace BtcE
+namespace BtcE.Data
 {
   public static class BtcePairHelper
   {

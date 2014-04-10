@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BtcE
+namespace BtcE.Data
 {
     public static class BtceCurrencyHelper
     {
