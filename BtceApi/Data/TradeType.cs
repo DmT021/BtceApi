@@ -1,4 +1,4 @@
-namespace BtcE
+namespace BtcE.Data
 {
     public enum TradeType
     {

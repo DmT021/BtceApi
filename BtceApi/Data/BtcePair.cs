@@ -1,4 +1,4 @@
-namespace BtcE
+namespace BtcE.Data
 {
   /// <summary>
   ///     BTC-e currency pairs, sorted alphabetically except Unknown as 1st since it is always present and will not change

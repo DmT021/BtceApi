@@ -2,7 +2,7 @@ using System;
 using BtcE.Utils;
 using Newtonsoft.Json.Linq;
 
-namespace BtcE
+namespace BtcE.Data
 {
     public class TradeInfo
     {

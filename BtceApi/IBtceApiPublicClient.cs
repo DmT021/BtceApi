@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BtcE.Data;
 
 namespace BtcE
 {

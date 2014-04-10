@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace BtcE
+namespace BtcE.Data
 {
     public class Transaction
     {
