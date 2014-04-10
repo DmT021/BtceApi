@@ -10,6 +10,9 @@ namespace BtcE
 
         public static TradeHistory ReadFromJObject(JObject o)
         {
+          if (o == null)
+            return null;
+
             return new TradeHistory
                 {
                     List =

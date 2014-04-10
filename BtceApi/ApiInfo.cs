@@ -1,11 +1,11 @@
 ﻿namespace BtcE
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Text;
-  using Newtonsoft.Json.Linq;
   using BtcE.Utils;
-  using System;
+  using Newtonsoft.Json.Linq;
 
   /// <summary>
   /// TODO: Update summary.
