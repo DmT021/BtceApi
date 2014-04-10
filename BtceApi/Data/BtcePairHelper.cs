@@ -43,6 +43,11 @@ namespace BtcE.Data
       }
     }
 
+    public static Tuple<BtceCurrency, BtceCurrency> ToCurrencies(BtcePair pair)
+    {
+      return BtceCurrencyHelper.FromBtcePair2(pair);
+    }
+
     public static string ToString(BtcePair v)
     {
       return Enum.GetName(typeof(BtcePair), v).ToLowerInvariant();
