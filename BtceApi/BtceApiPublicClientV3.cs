@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
+using BtcE.Extensions;
 
 namespace BtcE
 {
