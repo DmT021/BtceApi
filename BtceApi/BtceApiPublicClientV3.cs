@@ -30,15 +30,14 @@ namespace BtcE
       return GetDepth(new[] { pair }).FirstOrDefault().Value;
     }
 
-    public IDictionary<BtcePair, IEnumerable<TradeInfo>> GetTrades(IEnumerable<BtcePair> pairlist, int limit = 150)
+    public IDictionary<BtcePair, List<TradeInfo>> GetTrades(IEnumerable<BtcePair> pairlist, int limit = 150)
     {
-      return BtceApiV3.GetTrades(pairlist.ToArray(), limit).ToDictionary(k => k.Key, v => (IEnumerable<TradeInfo>)v.Value);
+      return BtceApiV3.GetTrades(pairlist.ToArray(), limit).ToDictionary(k => k.Key, v => v.Value);
     }
 
     public decimal GetFee(BtcePair pair)
     {
       return GetInfo().Pairs[pair].Fee;
-      return BtceApi.GetFee(pair);
     }
 
     public IEnumerable<TradeInfo> GetTrades(BtcePair pair)
