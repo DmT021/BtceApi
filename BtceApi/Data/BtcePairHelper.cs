@@ -5,7 +5,7 @@ namespace BtcE.Data
 {
   public static class BtcePairHelper
   {
-    [Obsolete("Functionality replaced by BtcApiV3.GetInfo()",false)]
+    [Obsolete("Functionality replaced by BtcePairHelper.GetInfo(BtcePair)", false)]
     private static readonly Tuple<BtcePair, int, int>[] precisions = new[]
     {
         Tuple.Create(BtcePair.btc_usd, 2, 3),
@@ -29,7 +29,7 @@ namespace BtcE.Data
     /// <param name="btcPair">Btc-E Pair</param>
     /// <returns>Tuple of int,int where Item1 is Amount's precision and Item2 is Price's precision</returns>
 
-    [Obsolete("Functionality replaced by BtcApiV3.GetInfo()", false)]
+    [Obsolete("Functionality replaced by BtcePairHelper.GetInfo(BtcePair)", false)]
     public static Tuple<int, int> GetPrecision(BtcePair btcPair)
     {
       Tuple<BtcePair, int, int> pairPrecision = precisions.SingleOrDefault(x => x.Item1 == btcPair);
@@ -40,6 +40,31 @@ namespace BtcE.Data
       else
       {
         return Tuple.Create(pairPrecision.Item2, pairPrecision.Item3);
+      }
+    }
+
+    static DateTime _apiInfoLastFetch = DateTime.MinValue;
+    static ApiInfo _apiInfoCache = null;
+    static readonly TimeSpan _apiInfoCacheMaxAge = new TimeSpan(24, 0, 0);
+
+    public static BtcePairInfo GetInfo(BtcePair pair, bool forceFetch = false)
+    {
+      UpdateExpiredApiInfo(forceFetch);
+      return _apiInfoCache.Pairs[pair];
+    }
+
+    public static BtcePairInfo GetInfo(string pair, bool forceFetch = false)
+    {
+      UpdateExpiredApiInfo(forceFetch);
+      return _apiInfoCache.UnsupportedPairs[pair];
+    }
+
+    private static void UpdateExpiredApiInfo(bool forceFetch)
+    {
+      if (forceFetch || _apiInfoCache == null || DateTime.UtcNow - _apiInfoLastFetch >= _apiInfoCacheMaxAge)
+      {
+        _apiInfoCache = BtceApiV3.GetApiInfo();
+        _apiInfoLastFetch = DateTime.UtcNow;
       }
     }
 
