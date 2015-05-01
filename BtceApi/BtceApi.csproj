@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{266935B5-B5B2-462C-8308-20E2BD1360B5}</ProjectGuid>
+    <ProjectGuid>{C605F747-ABB3-406F-B85D-CBB49F758C9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BtcE</RootNamespace>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,15 +32,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|X64'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\ThirdParty\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,24 +68,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ApiInfo.cs" />
     <Compile Include="BtceApi.cs" />
-    <Compile Include="BtceCurrency.cs" />
-    <Compile Include="BtcePair.cs" />
-    <Compile Include="CancelOrderAnswer.cs" />
-    <Compile Include="Depth.cs" />
-    <Compile Include="Funds.cs" />
-    <Compile Include="OrderList.cs" />
+    <Compile Include="BtceApiClientV3.cs" />
+    <Compile Include="BtceApiPublicClientV3.cs" />
+    <Compile Include="BtceApiV3.cs" />
+    <Compile Include="Data\BtceCurrency.cs" />
+    <Compile Include="Data\BtceCurrencyHelper.cs" />
+    <Compile Include="Data\BtcePairInfo.cs" />
+    <Compile Include="BtceException.cs" />
+    <Compile Include="Data\BtcePair.cs" />
+    <Compile Include="Data\BtcePairHelper.cs" />
+    <Compile Include="Data\CancelOrderAnswer.cs" />
+    <Compile Include="ClientFactory.cs" />
+    <Compile Include="Data\Depth.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Data\Funds.cs" />
+    <Compile Include="IBtceApiClient.cs" />
+    <Compile Include="IBtceApiPublicClient.cs" />
+    <Compile Include="IClientFactory.cs" />
+    <Compile Include="Data\Order.cs" />
+    <Compile Include="Data\OrderInfo.cs" />
+    <Compile Include="Data\OrderList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ticker.cs" />
-    <Compile Include="TradeInfo.cs" />
-    <Compile Include="TradeInfoType.cs" />
-    <Compile Include="UserInfo.cs" />
-    <Compile Include="Rights.cs" />
-    <Compile Include="TradeAnswer.cs" />
-    <Compile Include="TradeHistory.cs" />
-    <Compile Include="TradeType.cs" />
-    <Compile Include="TransHistory.cs" />
-    <Compile Include="UnixTime.cs" />
+    <Compile Include="Data\Ticker.cs" />
+    <Compile Include="Data\Trade.cs" />
+    <Compile Include="Data\TradeInfo.cs" />
+    <Compile Include="Data\TradeInfoType.cs" />
+    <Compile Include="Data\TradeInfoTypeHelper.cs" />
+    <Compile Include="Data\TradeTypeHelper.cs" />
+    <Compile Include="Data\Transaction.cs" />
+    <Compile Include="Data\UserInfo.cs" />
+    <Compile Include="Data\Rights.cs" />
+    <Compile Include="Data\TradeAnswer.cs" />
+    <Compile Include="Data\TradeHistory.cs" />
+    <Compile Include="Data\TradeType.cs" />
+    <Compile Include="Data\TransHistory.cs" />
+    <Compile Include="Utils\UnixTime.cs" />
+    <Compile Include="WebApi.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
