@@ -1,6 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿//
+// https://github.com/multiprogramm/WexAPI
+//
 
-namespace BtcE
+using Newtonsoft.Json.Linq;
+
+namespace Wex
 {
 	public class CancelOrderAnswer
 	{
@@ -8,8 +12,10 @@ namespace BtcE
 		public Funds Funds { get; private set; }
 
 		private CancelOrderAnswer() {}
-		public static CancelOrderAnswer ReadFromJObject(JObject o) {
-			return new CancelOrderAnswer() {
+		public static CancelOrderAnswer ReadFromJObject(JObject o)
+		{
+			return new CancelOrderAnswer()
+			{
 				Funds = Funds.ReadFromJObject(o["funds"] as JObject),
 				OrderId = o.Value<int>("order_id")
 			};

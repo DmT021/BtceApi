@@ -161,3 +161,7 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+/WexApi/x64
+/WexApi/x86
+x64
+x86

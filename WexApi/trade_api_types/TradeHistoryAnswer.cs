@@ -1,24 +1,31 @@
-﻿using Newtonsoft.Json.Linq;
+﻿//
+// https://github.com/multiprogramm/WexAPI
+//
+
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BtcE
+namespace Wex
 {
 	public class Trade
 	{
-		public BtcePair Pair { get; private set; }
+		public WexPair Pair { get; private set; }
 		public TradeType Type { get; private set; }
 		public decimal Amount { get; private set; }
 		public decimal Rate { get; private set; }
 		public int OrderId { get; private set; }
 		public bool IsYourOrder { get; private set; }
 		public UInt32 Timestamp { get; private set; }
-		public static Trade ReadFromJObject(JObject o) {
+
+		public static Trade ReadFromJObject(JObject o) 
+		{
 			if ( o == null )
 				return null;
+
 			return new Trade() {
-				Pair = BtcePairHelper.FromString(o.Value<string>("pair")),
+				Pair = WexPairHelper.FromString(o.Value<string>("pair")),
 				Type = TradeTypeHelper.FromString(o.Value<string>("type")),
 				Amount = o.Value<decimal>("amount"),
 				Rate = o.Value<decimal>("rate"),
@@ -28,12 +35,21 @@ namespace BtcE
 			};
 		}
 	}
-	public class TradeHistory
+	public class TradeHistoryAnswer
 	{
 		public Dictionary<int, Trade> List { get; private set; }
-		public static TradeHistory ReadFromJObject(JObject o) {
-			return new TradeHistory() {
-				List = o.OfType<KeyValuePair<string, JToken>>().ToDictionary(item => int.Parse(item.Key), item => Trade.ReadFromJObject(item.Value as JObject))
+		public static TradeHistoryAnswer ReadFromJObject(JObject o)
+		{
+			var sel = o.OfType<JProperty>().Select(
+				x => new KeyValuePair<int, Trade>(
+					int.Parse(x.Name),
+					Trade.ReadFromJObject(x.Value as JObject)
+				)
+			);
+
+			return new TradeHistoryAnswer()
+			{
+				List = sel.ToDictionary(x => x.Key, x => x.Value)
 			};
 		}
 	}
