@@ -28,7 +28,7 @@ namespace Wex
 		usd,
 		rur,
 		eur,
-		FIAT_END,
+		FIAT_END, // bound only
 
 		// Tokens:
 		TOKENS_BEGIN, // bound only
