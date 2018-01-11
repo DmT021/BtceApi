@@ -161,7 +161,7 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
-/BtceApi/x64
-/BtceApi/x86
+/WexApi/x64
+/WexApi/x86
 x64
 x86
